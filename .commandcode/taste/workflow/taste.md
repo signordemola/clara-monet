@@ -1,6 +1,6 @@
 # Workflow
 
-- Build one phase at a time, sequentially — do not jump ahead to later phases before completing the current one. Confidence: 0.70
+- Build one phase at a time, sequentially — do not jump ahead to later phases before completing the current one. Only move to the next phase when explicitly asked or when the current phase is confirmed complete. Confidence: 0.80
 - Reference and copy UI/UX from the Lovable AI project at /home/adedamola/Documents/demo-research/project-b instead of designing from scratch. Confidence: 0.70
 - Consult the booking domain skill files (.ai-skills/docs/domains/booking/) as reference before building booking-related features. Confidence: 0.65
 - Follow the brainstorming skill workflow properly before starting implementation: explore context, ask clarifying questions one at a time, present design, then write the design doc. Do not rush into code extraction or implementation. Confidence: 0.85

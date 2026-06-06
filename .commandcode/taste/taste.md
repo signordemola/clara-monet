@@ -18,6 +18,10 @@
 
 - Do not add comments to code files — keep files clean and comment-free. Confidence: 0.85
 
+# Zod
+
+- In Zod v4, use standalone schema constructors like `z.email()` and `z.url()` instead of chaining methods like `.email()` or `.url()` on `z.string()`. Confidence: 0.75
+
 # Workflow
 
 See [workflow/taste.md](workflow/taste.md)
