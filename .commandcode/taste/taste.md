@@ -14,13 +14,17 @@
 
 - Place the Prisma generated client output in the project root (e.g., `generated/prisma`), not under `lib/`. Confidence: 0.65
 
+# Architecture
+
+- No cron jobs — this is a demo app deployed on Vercel. Trigger reminders and scheduled actions manually through the owner dashboard instead. Confidence: 0.65
+
 # Code Style
 
 - Do not add comments to code files — keep files clean and comment-free. Confidence: 0.85
 
 # Zod
 
-- In Zod v4, use standalone schema constructors like `z.email()` and `z.url()` instead of chaining methods like `.email()` or `.url()` on `z.string()`. Confidence: 0.75
+- In Zod v4, use standalone schema constructors like `z.email()` and `z.url()` instead of chaining methods like `.email()` or `.url()` on `z.string()`. Confidence: 0.85
 
 # Workflow
 
