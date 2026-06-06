@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server"
+import { render } from "@react-email/components"
+import { BookingLinkEmail } from "@/emails/booking-link"
 import { prisma } from "@/lib/db"
 import { requireOwner } from "@/lib/session"
+import { resend } from "@/lib/resend"
 import { apiError } from "@/lib/api-error"
 import {
   ApproveInquirySchema,
@@ -66,6 +69,26 @@ export async function POST(req: Request) {
         bookingToken,
       },
     })
+
+    try {
+      const html = await render(
+        BookingLinkEmail({
+          clientName: inquiry.name,
+          sessionType: sessionType.name,
+          bookingUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/book/${bookingToken}`,
+          ownerMessage: result.data.ownerMessage,
+        })
+      )
+
+      await resend.emails.send({
+        from: process.env.EMAIL_FROM!,
+        to: inquiry.email,
+        subject: `Your booking is ready — Clara Monét Photography`,
+        html,
+      })
+    } catch {
+      // non-blocking
+    }
 
     return NextResponse.json({ success: true, bookingToken })
   }

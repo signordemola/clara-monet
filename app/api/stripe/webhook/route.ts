@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server"
+import { render } from "@react-email/components"
+import { BookingConfirmedEmail } from "@/emails/booking-confirmed"
 import { stripe } from "@/lib/stripe"
 import { prisma } from "@/lib/db"
 import { resend } from "@/lib/resend"
@@ -42,7 +44,7 @@ export async function POST(req: Request) {
 
       const inquiry = await prisma.inquiry.findUnique({
         where: { id: metadata.inquiryId },
-        include: { job: true },
+        include: { job: { include: { sessionType: true } } },
       })
 
       if (!inquiry || !inquiry.job) {
@@ -78,11 +80,31 @@ export async function POST(req: Request) {
       })
 
       try {
+        const html = await render(
+          BookingConfirmedEmail({
+            clientName: client.name,
+            sessionType: inquiry.job!.sessionType?.name ?? "your session",
+            sessionDate: inquiry.job!.sessionDate
+              ? new Intl.DateTimeFormat("en-GB", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                  timeZone: "Europe/London",
+                }).format(inquiry.job!.sessionDate)
+              : "TBC",
+            sessionLocation: inquiry.job!.sessionLocation ?? undefined,
+            bookingFee: inquiry.job!.bookingFee,
+            balanceAmount: inquiry.job!.balanceAmount,
+            portalUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/portal/${sessionToken}`,
+          })
+        )
+
         await resend.emails.send({
           from: process.env.EMAIL_FROM!,
           to: inquiry.email,
           subject: "You're booked — Clara Monét Photography",
-          text: `Thanks ${inquiry.name}. Your booking is confirmed. View your session portal here: ${process.env.NEXT_PUBLIC_BASE_URL}/portal/${sessionToken}`,
+          html,
         })
       } catch {
         // non-blocking

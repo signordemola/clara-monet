@@ -4,7 +4,7 @@ import { Wordmark } from "@/components/brand/wordmark"
 export function SiteFooter() {
   return (
     <footer className="border-t border-hairline bg-paper px-6 py-12 lg:px-10">
-      <div className="mx-auto max-w-[1400px]">
+      <div className="mx-auto max-w-350">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           <div>
             <Wordmark size="md" />

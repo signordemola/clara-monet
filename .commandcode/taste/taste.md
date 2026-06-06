@@ -21,6 +21,7 @@
 # Code Style
 
 - Do not add comments to code files — keep files clean and comment-free. Confidence: 0.85
+- Both `React.FormEvent` and `React.FormEventHandler` are deprecated in React 19. Use the semantically correct types instead: `SubmitEvent<HTMLFormElement>` for `<form onSubmit>`, `ChangeEvent<HTMLInputElement>` for `<input onChange>`, and `SyntheticEvent` when you don't care about the specific event type. Confidence: 0.90
 
 # Zod
 
@@ -29,3 +30,7 @@
 # Workflow
 
 See [workflow/taste.md](workflow/taste.md)
+
+# Shadcn/ui
+
+- Use base (baseui) style variants for shadcn/ui components, not radix variants (e.g., `base/field` not `radix/field`). Confidence: 0.80

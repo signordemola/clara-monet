@@ -16,7 +16,7 @@ export function Hero() {
 
   return (
     <section id="top" className="relative">
-      <div className="grid min-h-[100vh] grid-cols-1 lg:grid-cols-12">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-12">
         <div className="relative z-10 flex flex-col justify-between px-6 pt-32 pb-12 lg:col-span-5 lg:px-12 lg:pt-40">
           <div className="flex items-center gap-3 text-[10px] tracking-[0.3em] text-ink/55 uppercase">
             <span className="h-px w-8 bg-ink/30" />
@@ -81,7 +81,7 @@ export function Hero() {
               priority
               sizes="(max-width: 1024px) 100vw, 58vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-paper/30 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-paper/30 via-transparent to-transparent" />
           </div>
 
           <div className="absolute right-6 bottom-6 z-10 text-right text-[10px] tracking-[0.24em] text-paper/85 uppercase mix-blend-difference">

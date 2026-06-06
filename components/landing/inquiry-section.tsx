@@ -1,18 +1,33 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 import { SESSION_TYPES, type SessionType, formatPence } from "@/lib/mock-data"
+import { submitInquiry } from "@/lib/actions"
+import { Field, FieldLabel } from "@/components/ui/field"
 
 export function InquirySection() {
   const router = useRouter()
-  const [submitting, setSubmitting] = useState(false)
+  const [pending, startTransition] = useTransition()
   const [sessionType, setSessionType] = useState<SessionType>("personal-brand")
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setSubmitting(true)
-    setTimeout(() => router.push("/inquiry/submitted"), 700)
+
+    const formData = new FormData(e.currentTarget)
+    formData.set("sessionTypePref", sessionType)
+
+    startTransition(async () => {
+      const result = await submitInquiry(formData)
+
+      if (!result.success) {
+        toast.error(result.error ?? "Something went wrong")
+        return
+      }
+
+      router.push("/inquiry/submitted")
+    })
   }
 
   return (
@@ -20,7 +35,7 @@ export function InquirySection() {
       id="inquire"
       className="relative overflow-hidden bg-paper-warm px-6 py-28 lg:px-10 lg:py-40"
     >
-      <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-20">
+      <div className="mx-auto grid max-w-350 grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-5">
           <div className="flex items-center gap-3 text-[10px] tracking-[0.3em] text-clay uppercase">
             <span className="h-px w-8 bg-clay/60" />
@@ -60,8 +75,27 @@ export function InquirySection() {
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2">
-            <Field label="Your name" id="name" required />
-            <Field label="Email" id="email" type="email" required />
+            <Field orientation="vertical">
+              <FieldLabel className="text-[10px] tracking-[0.24em] text-ink/55 uppercase">
+                Your name
+              </FieldLabel>
+              <input
+                name="name"
+                required
+                className="w-full border border-hairline bg-paper px-4 py-3 text-base text-ink placeholder:text-ink/30 focus:border-ink focus:outline-none"
+              />
+            </Field>
+            <Field orientation="vertical">
+              <FieldLabel className="text-[10px] tracking-[0.24em] text-ink/55 uppercase">
+                Email
+              </FieldLabel>
+              <input
+                name="email"
+                type="email"
+                required
+                className="w-full border border-hairline bg-paper px-4 py-3 text-base text-ink placeholder:text-ink/30 focus:border-ink focus:outline-none"
+              />
+            </Field>
           </div>
 
           <div className="mt-6">
@@ -96,32 +130,41 @@ export function InquirySection() {
           </div>
 
           <div className="mt-6 grid gap-6 sm:grid-cols-2">
-            <Field
-              label="Preferred window"
-              id="window"
-              placeholder="e.g. late June, weekday mornings"
-            />
-            <Field
-              label="How did you find me?"
-              id="referral"
-              placeholder="Instagram, referral, search…"
-            />
+            <Field orientation="vertical">
+              <FieldLabel className="text-[10px] tracking-[0.24em] text-ink/55 uppercase">
+                Preferred window
+              </FieldLabel>
+              <input
+                name="preferredDate"
+                placeholder="e.g. late June, weekday mornings"
+                className="w-full border border-hairline bg-paper px-4 py-3 text-base text-ink placeholder:text-ink/30 focus:border-ink focus:outline-none"
+              />
+            </Field>
+            <Field orientation="vertical">
+              <FieldLabel className="text-[10px] tracking-[0.24em] text-ink/55 uppercase">
+                How did you find me?
+              </FieldLabel>
+              <input
+                name="referral"
+                placeholder="Instagram, referral, search…"
+                className="w-full border border-hairline bg-paper px-4 py-3 text-base text-ink placeholder:text-ink/30 focus:border-ink focus:outline-none"
+              />
+            </Field>
           </div>
 
           <div className="mt-6">
-            <label
-              htmlFor="message"
-              className="mb-2 block text-[10px] tracking-[0.24em] text-ink/55 uppercase"
-            >
-              Tell me about the session
-            </label>
-            <textarea
-              id="message"
-              required
-              rows={5}
-              placeholder="Who's it for, what's the moment, anything you've been thinking about…"
-              className="w-full resize-none border border-hairline bg-paper px-4 py-3 text-base text-ink placeholder:text-ink/30 focus:border-ink focus:outline-none"
-            />
+            <Field orientation="vertical">
+              <FieldLabel className="text-[10px] tracking-[0.24em] text-ink/55 uppercase">
+                Tell me about the session
+              </FieldLabel>
+              <textarea
+                name="message"
+                required
+                rows={5}
+                placeholder="Who's it for, what's the moment, anything you've been thinking about…"
+                className="w-full resize-none border border-hairline bg-paper px-4 py-3 text-base text-ink placeholder:text-ink/30 focus:border-ink focus:outline-none"
+              />
+            </Field>
           </div>
 
           <label className="mt-6 flex cursor-pointer items-start gap-3 text-xs text-ink/70">
@@ -143,10 +186,10 @@ export function InquirySection() {
             </p>
             <button
               type="submit"
-              disabled={submitting}
+              disabled={pending}
               className="group inline-flex items-center gap-3 border border-ink bg-ink px-8 py-4 text-[11px] tracking-[0.24em] text-paper uppercase transition hover:border-clay hover:bg-clay disabled:opacity-60"
             >
-              {submitting ? "Sending…" : "Send inquiry"}
+              {pending ? "Sending…" : "Send inquiry"}
               <span className="transition-transform group-hover:translate-x-1">
                 →
               </span>
@@ -155,38 +198,5 @@ export function InquirySection() {
         </form>
       </div>
     </section>
-  )
-}
-
-function Field({
-  label,
-  id,
-  type = "text",
-  placeholder,
-  required,
-}: {
-  label: string
-  id: string
-  type?: string
-  placeholder?: string
-  required?: boolean
-}) {
-  return (
-    <div>
-      <label
-        htmlFor={id}
-        className="mb-2 block text-[10px] tracking-[0.24em] text-ink/55 uppercase"
-      >
-        {label}
-      </label>
-      <input
-        id={id}
-        name={id}
-        type={type}
-        required={required}
-        placeholder={placeholder}
-        className="w-full border border-hairline bg-paper px-4 py-3 text-base text-ink placeholder:text-ink/30 focus:border-ink focus:outline-none"
-      />
-    </div>
   )
 }

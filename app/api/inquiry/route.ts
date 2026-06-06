@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server"
+import { render } from "@react-email/components"
+import { InquiryAcknowledgementEmail } from "@/emails/inquiry-acknowledgement"
 import { InquirySchema } from "@/schemas/inquiry.schema"
 import { prisma } from "@/lib/db"
 import { resend } from "@/lib/resend"
@@ -32,11 +34,19 @@ export async function POST(req: Request) {
   })
 
   try {
+    const html = await render(
+      InquiryAcknowledgementEmail({
+        clientName: name,
+        sessionTypePref: sessionTypePref ?? undefined,
+        message,
+      })
+    )
+
     await resend.emails.send({
       from: process.env.EMAIL_FROM!,
       to: email,
       subject: "Thank you for your inquiry — Clara Monét Photography",
-      text: `Thank you for reaching out, ${name}. I'll review your inquiry and be in touch within 24 hours. — Clara`,
+      html,
     })
   } catch {
     // email failure never blocks inquiry creation

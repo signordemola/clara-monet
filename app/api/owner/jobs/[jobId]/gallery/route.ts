@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server"
+import { render } from "@react-email/components"
+import { GalleryDeliveryEmail } from "@/emails/gallery-delivery"
 import { GalleryDeliverySchema } from "@/schemas/gallery.schema"
 import { prisma } from "@/lib/db"
 import { requireOwner } from "@/lib/session"
@@ -52,11 +54,27 @@ export async function POST(
   })
 
   try {
+    const html = await render(
+      GalleryDeliveryEmail({
+        clientName: job.client.name,
+        galleryUrl: result.data.galleryUrl,
+        imageCount: result.data.imageCount,
+        balanceAmount: job.balanceAmount,
+        balanceDueDate: balanceDueAt.toLocaleDateString("en-GB", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }),
+        portalUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/portal/${job.sessionToken}`,
+      })
+    )
+
     await resend.emails.send({
       from: process.env.EMAIL_FROM!,
       to: job.client.email,
       subject: "Your gallery is ready — Clara Monét Photography",
-      text: `Your gallery is ready: ${result.data.galleryUrl}\n\nBalance of £${(job.balanceAmount / 100).toFixed(2)} due by ${balanceDueAt.toLocaleDateString("en-GB")}`,
+      html,
     })
   } catch {
     // non-blocking
