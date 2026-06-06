@@ -1,14 +1,19 @@
-import { Geist, Geist_Mono, Inter } from "next/font/google"
+import { Fraunces, Inter } from "next/font/google"
 
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
+import { TooltipProvider } from "@/components/ui/tooltip"
+import { Toaster } from "@/components/ui/sonner"
+import { LenisProvider } from "@/components/landing/lenis-provider"
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'})
-
-const fontMono = Geist_Mono({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-sans",
+})
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-serif",
 })
 
 export default function RootLayout({
@@ -18,12 +23,20 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="en-GB"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
+      className={cn(
+        "antialiased",
+        inter.variable,
+        fraunces.variable,
+        "font-sans"
+      )}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <LenisProvider>
+          <TooltipProvider>{children}</TooltipProvider>
+        </LenisProvider>
+        <Toaster />
       </body>
     </html>
   )
