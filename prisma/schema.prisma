@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Session Types ──────────────────────────────────────────────
+
+model SessionType {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  description  String?
+  duration     Int      // minutes
+  price        Int      // pence
+  bookingFee   Int      // pence (25%)
+  imageCount   String   // "40–60 edited images"
+  turnaround   String   // "2–3 weeks"
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  jobs         Job[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ─── Inquiries ──────────────────────────────────────────────────
+
+model Inquiry {
+  id              String        @id @default(cuid())
+  name            String
+  email           String
+  phone           String?
+  sessionTypePref String?
+  preferredDate   String?
+  message         String
+  status          InquiryStatus @default(NEW)
+  ownerNotes      String?
+  bookingToken    String?       @unique
+  job             Job?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+enum InquiryStatus {
+  NEW
+  REVIEWED
+  APPROVED
+  BOOKED
+  DECLINED
+}
+
+// ─── Clients ────────────────────────────────────────────────────
+
+model Client {
+  id               String   @id @default(cuid())
+  email            String   @unique
+  name             String
+  phone            String?
+  gdprConsent      Boolean  @default(false)
+  gdprConsentAt    DateTime?
+  marketingConsent Boolean  @default(false)
+  jobs             Job[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+// ─── Jobs ───────────────────────────────────────────────────────
+
+model Job {
+  id                     String        @id @default(cuid())
+  clientId               String
+  client                 Client        @relation(fields: [clientId], references: [id])
+  inquiryId              String?       @unique
+  inquiry                Inquiry?      @relation(fields: [inquiryId], references: [id])
+  sessionTypeId          String
+  sessionType            SessionType   @relation(fields: [sessionTypeId], references: [id])
+  stage                  JobStage      @default(BOOKED)
+
+  sessionDate            DateTime?
+  sessionLocation        String?
+
+  totalPrice             Int
+  bookingFee             Int
+  balanceAmount          Int
+
+  bookingFeeStatus       FeeStatus     @default(HELD)
+  balanceStatus          FeeStatus     @default(PENDING)
+  stripeBookingIntentId  String?       @unique
+  stripeBalanceIntentId  String?       @unique
+
+  sessionToken           String        @unique
+  contractSignedAt       DateTime?
+  modelReleaseGranted    Boolean       @default(false)
+
+  questionnaire          Questionnaire?
+
+  galleryUrl             String?
+  galleryDeliveredAt     DateTime?
+  imageCount             Int?
+
+  balanceInvoiceSentAt   DateTime?
+  balanceDueAt           DateTime?
+  balancePaidAt          DateTime?
+
+  reviewRequestSentAt    DateTime?
+
+  questionnaireSentAt           DateTime?
+  questionnaireReminderSentAt   DateTime?
+  reminder48hSentAt             DateTime?
+  reminder24hSentAt             DateTime?
+  editingEmailSentAt            DateTime?
+  balanceReminderSentAt         DateTime?
+
+  ownerNotes             String?
+
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+}
+
+enum JobStage {
+  BOOKED
+  QUESTIONNAIRE_SENT
+  QUESTIONNAIRE_DONE
+  SESSION_COMPLETE
+  GALLERY_SENT
+  PAID
+  COMPLETE
+}
+
+enum FeeStatus {
+  PENDING
+  HELD
+  PAID
+  REFUNDED
+  WAIVED
+}
+
+// ─── Questionnaire ──────────────────────────────────────────────
+
+model Questionnaire {
+  id              String   @id @default(cuid())
+  jobId           String   @unique
+  job             Job      @relation(fields: [jobId], references: [id])
+  sessionGoal     String?
+  participants    String?
+  locationPref    String?
+  mood            String?
+  outfitPlans     String?
+  moodBoardUrl    String?
+  avoidsNotes     String?
+  imageUsage      String?
+  additionalNotes String?
+  modelRelease    Boolean  @default(false)
+  submittedAt     DateTime @default(now())
+}
+
+// ─── Cron Log ───────────────────────────────────────────────────
+
+model CronLog {
+  id      String   @id @default(cuid())
+  type    String
+  jobId   String
+  sentAt  DateTime @default(now())
+  success Boolean
+  error   String?
+}

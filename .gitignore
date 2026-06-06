@@ -38,3 +38,5 @@ next-env.d.ts
 AGENTS.md
 CLAUDE.md
 .cursorrules
+.commandcode/
+/lib/generated/prisma
