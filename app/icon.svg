@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" fill="none">
+  <!-- Viewfinder corner crop marks -->
+  <path
+    d="M 5 11 V 5 H 11 M 25 5 H 31 V 11 M 5 25 V 31 H 11 M 25 31 H 31 V 25"
+    stroke="#2d2522"
+    stroke-width="1.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    opacity="0.8"
+  />
+  <!-- Monogram Initials -->
+  <text
+    x="8"
+    y="18"
+    font-family="Fraunces, Georgia, serif"
+    font-style="italic"
+    font-weight="600"
+    font-size="15px"
+    fill="#7a8d7a"
+  >
+    c
+  </text>
+  <text
+    x="19"
+    y="26"
+    font-family="Fraunces, Georgia, serif"
+    font-style="italic"
+    font-weight="300"
+    font-size="15px"
+    fill="#a15c44"
+  >
+    m
+  </text>
+  <!-- Small focus dot / terracotta indicator -->
+  <circle cx="31" cy="5" r="1.5" fill="#a15c44" />
+</svg>

@@ -76,30 +76,30 @@ export function InquirySection() {
 
           <div className="grid gap-6 sm:grid-cols-2">
             <Field orientation="vertical">
-              <FieldLabel className="text-[10px] tracking-[0.24em] text-ink/55 uppercase">
+              <FieldLabel className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
                 Your name
               </FieldLabel>
               <input
                 name="name"
                 required
-                className="w-full border border-hairline bg-paper px-4 py-3 text-base text-ink placeholder:text-ink/30 focus:border-ink focus:outline-none"
+                className="w-full border border-ink/20 bg-paper px-4 py-3 text-base text-ink transition-colors placeholder:text-ink/60 hover:border-ink/50 focus:border-ink focus:outline-none"
               />
             </Field>
             <Field orientation="vertical">
-              <FieldLabel className="text-[10px] tracking-[0.24em] text-ink/55 uppercase">
+              <FieldLabel className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
                 Email
               </FieldLabel>
               <input
                 name="email"
                 type="email"
                 required
-                className="w-full border border-hairline bg-paper px-4 py-3 text-base text-ink placeholder:text-ink/30 focus:border-ink focus:outline-none"
+                className="w-full border border-ink/20 bg-paper px-4 py-3 text-base text-ink transition-colors placeholder:text-ink/60 hover:border-ink/50 focus:border-ink focus:outline-none"
               />
             </Field>
           </div>
 
           <div className="mt-6">
-            <label className="mb-3 block text-[10px] tracking-[0.24em] text-ink/55 uppercase">
+            <label className="mb-3 block text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
               Session type
             </label>
             <div className="grid grid-cols-1 gap-px bg-hairline sm:grid-cols-3">
@@ -108,10 +108,10 @@ export function InquirySection() {
                   type="button"
                   key={k}
                   onClick={() => setSessionType(k)}
-                  className={`bg-paper px-3 py-4 text-left transition ${
+                  className={`px-3 py-4 text-left transition ${
                     sessionType === k
                       ? "bg-ink text-paper"
-                      : "hover:bg-paper-warm"
+                      : "bg-paper text-ink hover:bg-paper-warm"
                   }`}
                 >
                   <div className="font-display text-base">
@@ -119,7 +119,7 @@ export function InquirySection() {
                   </div>
                   <div
                     className={`mt-1 text-[10px] tracking-[0.2em] uppercase ${
-                      sessionType === k ? "text-clay-soft" : "text-ink/55"
+                      sessionType === k ? "text-clay-soft" : "text-ink/80"
                     }`}
                   >
                     From {formatPence(SESSION_TYPES[k].price)}
@@ -131,30 +131,30 @@ export function InquirySection() {
 
           <div className="mt-6 grid gap-6 sm:grid-cols-2">
             <Field orientation="vertical">
-              <FieldLabel className="text-[10px] tracking-[0.24em] text-ink/55 uppercase">
+              <FieldLabel className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
                 Preferred window
               </FieldLabel>
               <input
                 name="preferredDate"
                 placeholder="e.g. late June, weekday mornings"
-                className="w-full border border-hairline bg-paper px-4 py-3 text-base text-ink placeholder:text-ink/30 focus:border-ink focus:outline-none"
+                className="w-full border border-ink/20 bg-paper px-4 py-3 text-base text-ink transition-colors placeholder:text-ink/60 hover:border-ink/50 focus:border-ink focus:outline-none"
               />
             </Field>
             <Field orientation="vertical">
-              <FieldLabel className="text-[10px] tracking-[0.24em] text-ink/55 uppercase">
+              <FieldLabel className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
                 How did you find me?
               </FieldLabel>
               <input
                 name="referral"
                 placeholder="Instagram, referral, search…"
-                className="w-full border border-hairline bg-paper px-4 py-3 text-base text-ink placeholder:text-ink/30 focus:border-ink focus:outline-none"
+                className="w-full border border-ink/20 bg-paper px-4 py-3 text-base text-ink transition-colors placeholder:text-ink/60 hover:border-ink/50 focus:border-ink focus:outline-none"
               />
             </Field>
           </div>
 
           <div className="mt-6">
             <Field orientation="vertical">
-              <FieldLabel className="text-[10px] tracking-[0.24em] text-ink/55 uppercase">
+              <FieldLabel className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
                 Tell me about the session
               </FieldLabel>
               <textarea
@@ -162,12 +162,12 @@ export function InquirySection() {
                 required
                 rows={5}
                 placeholder="Who's it for, what's the moment, anything you've been thinking about…"
-                className="w-full resize-none border border-hairline bg-paper px-4 py-3 text-base text-ink placeholder:text-ink/30 focus:border-ink focus:outline-none"
+                className="w-full resize-none border border-ink/20 bg-paper px-4 py-3 text-base text-ink transition-colors placeholder:text-ink/60 hover:border-ink/50 focus:border-ink focus:outline-none"
               />
             </Field>
           </div>
 
-          <label className="mt-6 flex cursor-pointer items-start gap-3 text-xs text-ink/70">
+          <label className="mt-6 flex cursor-pointer items-start gap-3 text-xs text-ink/80">
             <input
               type="checkbox"
               required
@@ -181,7 +181,7 @@ export function InquirySection() {
           </label>
 
           <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-hairline pt-6">
-            <p className="text-[10px] tracking-[0.24em] text-ink/45 uppercase">
+            <p className="text-[10px] font-medium tracking-[0.24em] text-ink/80 uppercase">
               Average reply · within the hour
             </p>
             <button

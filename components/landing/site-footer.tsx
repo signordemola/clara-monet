@@ -36,7 +36,7 @@ export function SiteFooter() {
                 href="/portal/demo-sarah"
                 className="inline-block text-ink transition hover:text-clay"
               >
-                Client portal (demo)
+                Client portal
               </Link>
               <br />
               <Link
