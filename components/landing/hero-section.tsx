@@ -18,7 +18,7 @@ export function Hero() {
     <section id="top" className="relative">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-12">
         <div className="relative z-10 flex flex-col justify-between px-6 pt-32 pb-12 lg:col-span-5 lg:px-16 lg:pt-40 xl:px-20">
-          <div className="flex items-center gap-3 text-[10px] tracking-[0.3em] text-ink/55 uppercase">
+          <div className="flex items-center gap-3 text-[10px] tracking-[0.3em] text-ink/70 uppercase">
             <span className="h-px w-8 bg-ink/30" />
             Est. Hackney · 2021
           </div>
@@ -54,14 +54,14 @@ export function Hero() {
               </a>
               <a
                 href="#work"
-                className="border-b border-ink/30 pb-1 text-[11px] tracking-[0.24em] text-ink/70 uppercase transition hover:border-ink hover:text-ink"
+                className="border-b border-ink/50 pb-1 text-[11px] tracking-[0.24em] text-ink/70 uppercase transition hover:border-ink hover:text-ink"
               >
                 View the work
               </a>
             </div>
           </div>
 
-          <div className="mt-16 flex items-end justify-between text-[10px] tracking-[0.24em] text-ink/45 uppercase">
+          <div className="mt-16 flex items-end justify-between text-[10px] tracking-[0.24em] text-ink/65 uppercase">
             <span>Scroll</span>
             <span className="hidden lg:inline">Studio №.07 · E8</span>
           </div>

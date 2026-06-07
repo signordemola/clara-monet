@@ -40,8 +40,8 @@ export function TopNav() {
             href="#work"
             className={`text-[11px] tracking-[0.22em] uppercase transition-all duration-700 ${
               scrolled
-                ? "text-ink/70 hover:text-ink"
-                : "text-ink/70 hover:text-ink md:text-paper-warm/80 md:hover:text-paper"
+                ? "text-ink/80 hover:text-ink"
+                : "text-ink/80 hover:text-ink md:text-paper-warm/80 md:hover:text-paper"
             }`}
           >
             Work
@@ -50,8 +50,8 @@ export function TopNav() {
             href="#sessions"
             className={`text-[11px] tracking-[0.22em] uppercase transition-all duration-700 ${
               scrolled
-                ? "text-ink/70 hover:text-ink"
-                : "text-ink/70 hover:text-ink md:text-paper-warm/80 md:hover:text-paper"
+                ? "text-ink/80 hover:text-ink"
+                : "text-ink/80 hover:text-ink md:text-paper-warm/80 md:hover:text-paper"
             }`}
           >
             Sessions
@@ -60,8 +60,8 @@ export function TopNav() {
             href="#about"
             className={`text-[11px] tracking-[0.22em] uppercase transition-all duration-700 ${
               scrolled
-                ? "text-ink/70 hover:text-ink"
-                : "text-ink/70 hover:text-ink md:text-paper-warm/80 md:hover:text-paper"
+                ? "text-ink/80 hover:text-ink"
+                : "text-ink/80 hover:text-ink md:text-paper-warm/80 md:hover:text-paper"
             }`}
           >
             About

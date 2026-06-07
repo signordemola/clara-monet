@@ -64,7 +64,7 @@ export function About() {
                 <div className="font-display text-3xl font-light text-ink">
                   {n}
                 </div>
-                <div className="mt-2 text-[10px] tracking-[0.22em] text-ink/55 uppercase">
+                <div className="mt-2 text-[10px] tracking-[0.22em] text-ink/75 uppercase">
                   {l}
                 </div>
               </div>

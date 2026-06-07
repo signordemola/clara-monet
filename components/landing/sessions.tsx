@@ -40,7 +40,7 @@ export function Sessions() {
                   <span className="font-display text-5xl text-clay italic">
                     0{i + 1}
                   </span>
-                  <div className="text-right text-[10px] tracking-[0.24em] text-paper/55 uppercase">
+                  <div className="text-right text-[10px] tracking-[0.24em] text-paper/70 uppercase">
                     {s.duration}
                     <br />
                     {s.images}
@@ -76,7 +76,7 @@ export function Sessions() {
           })}
         </div>
 
-        <p className="mt-8 text-[11px] tracking-[0.22em] text-paper/45 uppercase">
+        <p className="mt-8 text-[11px] tracking-[0.22em] text-paper/70 uppercase">
           All prices in GBP. 25% non-refundable booking fee secures the date.
           Balance due alongside gallery delivery.
         </p>
@@ -96,7 +96,7 @@ function SessionRow({
 }) {
   return (
     <div className="flex items-baseline justify-between text-sm">
-      <span className="text-[10px] tracking-[0.24em] text-paper/55 uppercase">
+      <span className="text-[10px] tracking-[0.24em] text-paper/70 uppercase">
         {label}
       </span>
       <span
