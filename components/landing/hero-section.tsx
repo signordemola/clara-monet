@@ -17,13 +17,13 @@ export function Hero() {
   return (
     <section id="top" className="relative">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-12">
-        <div className="relative z-10 flex flex-col justify-between px-6 pt-32 pb-12 lg:col-span-5 lg:px-12 lg:pt-40">
+        <div className="relative z-10 flex flex-col justify-between px-6 pt-32 pb-12 lg:col-span-5 lg:px-16 lg:pt-40 xl:px-20">
           <div className="flex items-center gap-3 text-[10px] tracking-[0.3em] text-ink/55 uppercase">
             <span className="h-px w-8 bg-ink/30" />
             Est. Hackney · 2021
           </div>
 
-          <div className="mt-auto max-w-xl">
+          <div className="my-auto max-w-xl">
             <h1 className="animate-lift font-display text-[clamp(2.75rem,7vw,5.25rem)] leading-[0.95] font-light tracking-[-0.02em]">
               Portraits
               <br />
@@ -67,7 +67,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="relative h-[50vh] overflow-hidden lg:col-span-7 lg:h-auto">
+        <div className="relative h-[60vh] overflow-hidden lg:col-span-7 lg:h-auto">
           <div
             ref={imgRef}
             className="absolute inset-0 will-change-transform"

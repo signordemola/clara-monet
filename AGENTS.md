@@ -4,7 +4,14 @@ Any AI coding agent working in this repository must follow these rules strictly.
 
 ## Rule 0 - Load Workflow Skills First
 
-**Before doing ANY work, read `.ai-skills/docs/ROUTER.md`.** It contains the workflow skill index. If a skill applies to your task (even a 1% chance), you MUST read and follow the full `SKILL.md` before starting. This is not optional. Skills override your default behavior. User instructions in this file override skills.
+<HARD-GATE>
+**⛔ MANDATORY — DO NOT CREATE OR EDIT SOURCE FILES UNTIL YOU HAVE:**
+1. Read `.ai-skills/docs/ROUTER.md`
+2. Stated which workflow skill applies to this task
+3. Completed its first checkpoint
+
+If the task feels too simple for a workflow, say so out loud and let the user decide. Do not skip silently.
+</HARD-GATE>
 
 ## Rule 1 - Think Before Coding
 
@@ -21,6 +28,17 @@ Nothing speculative. No abstractions for single-use code.
 Touch only what the task requires.  
 Do not improve, rewrite, or refactor adjacent code unless necessary for the task.  
 Match existing style exactly.
+
+## Rule 3.1 - No Code Comments or Bloat
+
+Do not add comments to generated project source code. No explanatory comments,
+section comments, TODO comments, JSDoc comments, commented-out code, or inline
+notes. Prefer clear names and simpler code instead.
+
+Use `const` arrow functions by default in JavaScript/TypeScript. Use `let` only
+when reassignment is required. Do not use `function` declarations unless a
+framework, runtime, or existing file convention requires them. Do not add
+speculative abstractions, future-proofing, unused options, or wrapper layers.
 
 ## Rule 4 - Goal-Driven Execution
 
