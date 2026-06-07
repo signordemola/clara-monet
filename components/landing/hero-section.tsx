@@ -67,7 +67,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="relative overflow-hidden lg:col-span-7">
+        <div className="relative h-[50vh] overflow-hidden lg:col-span-7 lg:h-auto">
           <div
             ref={imgRef}
             className="absolute inset-0 will-change-transform"

@@ -58,7 +58,7 @@ export function About() {
             </p>
           </div>
 
-          <dl className="mt-12 grid grid-cols-3 gap-px bg-hairline">
+          <dl className="mt-12 grid grid-cols-1 gap-px bg-hairline sm:grid-cols-3">
             {stats.map(([n, l]) => (
               <div key={l} className="bg-paper px-6 py-6">
                 <div className="font-display text-3xl font-light text-ink">

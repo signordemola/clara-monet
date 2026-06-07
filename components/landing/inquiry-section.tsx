@@ -35,7 +35,7 @@ export function InquirySection() {
       id="inquire"
       className="relative overflow-hidden bg-paper-warm px-6 py-28 lg:px-10 lg:py-40"
     >
-      <div className="mx-auto grid max-w-350 grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-20">
+      <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-5">
           <div className="flex items-center gap-3 text-[10px] tracking-[0.3em] text-clay uppercase">
             <span className="h-px w-8 bg-clay/60" />
@@ -102,7 +102,7 @@ export function InquirySection() {
             <label className="mb-3 block text-[10px] tracking-[0.24em] text-ink/55 uppercase">
               Session type
             </label>
-            <div className="grid grid-cols-3 gap-px bg-hairline">
+            <div className="grid grid-cols-1 gap-px bg-hairline sm:grid-cols-3">
               {(Object.keys(SESSION_TYPES) as SessionType[]).map((k) => (
                 <button
                   type="button"
