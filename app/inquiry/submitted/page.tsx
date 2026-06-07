@@ -4,7 +4,7 @@ import { Wordmark } from "@/components/brand/wordmark"
 export default function Submitted() {
   return (
     <main className="relative min-h-screen bg-paper px-6 py-10 lg:px-10">
-      <div className="mx-auto max-w-[1400px]">
+      <div className="mx-auto max-w-350">
         <Link href="/">
           <Wordmark size="md" />
         </Link>
@@ -40,7 +40,7 @@ export default function Submitted() {
           <span className="h-px w-8 bg-clay/60" />
         </div>
 
-        <h1 className="animate-lift mt-6 font-display text-5xl leading-[1] font-light tracking-tight lg:text-6xl">
+        <h1 className="animate-lift mt-6 font-display text-5xl leading-none font-light tracking-tight lg:text-6xl">
           Your inquiry is
           <br />
           <span className="text-clay italic">on my desk.</span>

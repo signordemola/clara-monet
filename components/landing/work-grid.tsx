@@ -58,7 +58,7 @@ export function WorkGrid() {
       id="work"
       className="relative bg-paper px-6 py-24 lg:px-10 lg:py-36"
     >
-      <div className="mx-auto max-w-[1400px]">
+      <div className="mx-auto max-w-350">
         <div className="mb-16 flex flex-wrap items-end justify-between gap-6">
           <div>
             <div className="flex items-center gap-3 text-[10px] tracking-[0.3em] text-clay uppercase">

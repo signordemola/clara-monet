@@ -13,9 +13,9 @@ export function About() {
       id="about"
       className="relative bg-paper px-6 py-28 lg:px-10 lg:py-40"
     >
-      <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-20">
+      <div className="mx-auto grid max-w-350 grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-5">
-          <div className="relative aspect-[4/5] overflow-hidden">
+          <div className="relative aspect-4/5 overflow-hidden">
             <Image
               src={claraImg}
               alt="Clara in her Hackney studio"
@@ -35,7 +35,7 @@ export function About() {
             <span className="h-px w-8 bg-clay/60" />
             The studio
           </div>
-          <h2 className="mt-5 font-display text-5xl leading-[1] font-light tracking-tight lg:text-6xl">
+          <h2 className="mt-5 font-display text-5xl leading-none font-light tracking-tight lg:text-6xl">
             I&apos;m <span className="italic">Clara</span>,
             <br />
             and I shoot

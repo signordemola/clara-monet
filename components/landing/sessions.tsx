@@ -8,7 +8,7 @@ export function Sessions() {
       id="sessions"
       className="relative bg-ink px-6 py-28 text-paper lg:px-10 lg:py-40"
     >
-      <div className="mx-auto max-w-[1400px]">
+      <div className="mx-auto max-w-350">
         <div className="mb-20 grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <div className="flex items-center gap-3 text-[10px] tracking-[0.3em] text-clay-soft uppercase">

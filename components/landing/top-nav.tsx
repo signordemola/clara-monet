@@ -29,7 +29,7 @@ export function TopNav() {
     >
       <div
         className={`mx-auto flex w-full items-center justify-between transition-all duration-700 ${
-          scrolled ? "max-w-[1500px]" : "max-w-[100vw]"
+          scrolled ? "max-w-375" : "max-w-[100vw]"
         }`}
       >
         <a href="#top" className="block">
