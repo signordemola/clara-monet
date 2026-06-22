@@ -35,7 +35,7 @@ export function SiteFooter() {
               studio@claramonet.co.uk
               <br />
               <Link
-                href="/portal/V1xKp9mQ2wR4tZ6bN8cJdL"
+                href="/portal"
                 className="inline-block text-ink transition hover:text-clay"
               >
                 Client portal
