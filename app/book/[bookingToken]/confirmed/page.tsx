@@ -35,10 +35,23 @@ export default async function BookingConfirmedPage({
 
   if (inquiry.status !== "BOOKED") {
     return (
-      <main className="mx-auto flex min-h-dvh max-w-2xl flex-col gap-8 px-6 py-12">
-        <p className="text-sm text-muted-foreground">
-          Your booking is being processed. Please check your email shortly.
-        </p>
+      <main className="flex min-h-dvh flex-col items-center justify-center px-6 text-center">
+        <div className="flex max-w-md flex-col items-center gap-6">
+          <p className="text-[10px] font-medium tracking-[0.24em] text-clay uppercase">
+            Payment received
+          </p>
+          <h1 className="font-display text-4xl font-light tracking-tight md:text-5xl">
+            You&apos;re nearly there.
+          </h1>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            Your payment has been processed. We&apos;re confirming your booking
+            — this takes just a moment. Check your inbox for a confirmation
+            email with your signed contract.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            You can safely close this page.
+          </p>
+        </div>
       </main>
     )
   }
@@ -46,17 +59,27 @@ export default async function BookingConfirmedPage({
   const portalUrl = `/portal/${inquiry.job.sessionToken}`
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-2xl flex-col gap-8 px-6 py-12">
-      <header className="flex flex-col gap-4">
+    <main className="mx-auto flex min-h-dvh max-w-2xl flex-col items-center justify-center gap-8 px-6 py-16 text-center">
+      <header className="flex w-full flex-col items-center gap-4">
         <BookingProgress step={3} />
-        <h1 className="font-display text-3xl font-light tracking-tight md:text-4xl">
-          You&apos;re booked, {inquiry.name}.
+        <p className="text-[10px] font-medium tracking-[0.24em] text-clay uppercase">
+          Booking confirmed
+        </p>
+        <h1 className="font-display text-4xl font-light tracking-tight md:text-5xl">
+          You&apos;re booked,{" "}
+          <span className="italic">{inquiry.name.split(" ")[0]}.</span>
         </h1>
+        <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
+          Your session is confirmed and your signed contract has been sent to{" "}
+          <span className="text-ink">{inquiry.email}</span>.
+        </p>
       </header>
 
-      <section className="border border-hairline bg-card p-6">
-        <div className="flex flex-col gap-2">
-          <p className="text-sm text-muted-foreground">Session</p>
+      <section className="w-full border border-hairline bg-card p-6 text-left">
+        <div className="flex flex-col gap-1">
+          <p className="text-[10px] font-medium tracking-[0.24em] text-muted-foreground uppercase">
+            Session details
+          </p>
           <p className="font-display text-xl font-light tracking-tight">
             {inquiry.job.sessionType.name}
           </p>
@@ -71,18 +94,16 @@ export default async function BookingConfirmedPage({
         </div>
       </section>
 
-      <section className="flex flex-col gap-3">
+      <section className="flex w-full flex-col items-center gap-4">
         <p className="text-sm text-muted-foreground">
-          Check your email — your signed contract has been sent as a PDF.
-        </p>
-        <p className="text-sm text-muted-foreground">
-          You&apos;ll receive a questionnaire in the next 48 hours.
+          You&apos;ll receive a questionnaire within 48 hours to help Clara
+          prepare for your session.
         </p>
         <a
           href={portalUrl}
-          className="inline-flex items-center justify-center border border-ink bg-ink px-6 py-3 text-center text-sm font-medium text-paper transition hover:bg-ink/90"
+          className="inline-flex items-center gap-2 border border-ink bg-ink px-8 py-4 text-[11px] tracking-[0.24em] text-paper uppercase transition hover:border-clay hover:bg-clay"
         >
-          Track your session in your portal →
+          View your client portal →
         </a>
       </section>
     </main>
