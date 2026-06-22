@@ -39,7 +39,9 @@ export default async function PortalStatusPage({
 
   const showQuestionnaireLink = job.stage === "QUESTIONNAIRE_SENT"
   const showInvoiceLink =
-    job.stage === "GALLERY_SENT" && job.balanceStatus === "PENDING"
+    !paymentSuccess &&
+    job.stage === "GALLERY_SENT" &&
+    job.balanceStatus === "PENDING"
   const showGalleryLink =
     job.stage === "GALLERY_SENT" ||
     job.stage === "PAID" ||
