@@ -86,8 +86,10 @@ export const ContractSignForm = ({
           onCheckedChange={(v) => form.setValue("modelRelease", v === true)}
         />
         <span>
-          I am happy for images to be used in Clara&apos;s portfolio and social
-          media.
+          I consent to Clara Monét Photography using selected images from this
+          session on her website, social media, and printed portfolio. I
+          understand I can withdraw this consent at any time by emailing{" "}
+          <span className="font-medium">hello@claramonet.co.uk</span>.
         </span>
       </label>
 

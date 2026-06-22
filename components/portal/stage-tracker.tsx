@@ -1,5 +1,5 @@
 import { JobStage } from "@/generated/prisma/enums"
-import { STAGE_ORDER, getStageLabel } from "@/lib/stages"
+import { STAGE_ORDER, getClientStageLabel } from "@/lib/stages"
 import { CheckIcon } from "lucide-react"
 
 export const StageTracker = ({ currentStage }: { currentStage: JobStage }) => {
@@ -29,7 +29,7 @@ export const StageTracker = ({ currentStage }: { currentStage: JobStage }) => {
                 active ? "font-medium text-ink" : "text-muted-foreground"
               }`}
             >
-              {getStageLabel(stage)}
+              {getClientStageLabel(stage)}
             </span>
           </div>
         )

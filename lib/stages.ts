@@ -21,6 +21,16 @@ const STAGE_LABEL: Record<JobStage, string> = {
   COMPLETE: "Complete",
 }
 
+const CLIENT_STAGE_LABEL: Record<JobStage, string> = {
+  BOOKED: "Booking confirmed",
+  QUESTIONNAIRE_SENT: "Pre-session questionnaire",
+  QUESTIONNAIRE_DONE: "Preparing your session",
+  SESSION_COMPLETE: "Editing in progress",
+  GALLERY_SENT: "Your gallery is ready",
+  PAID: "All settled",
+  COMPLETE: "Session complete",
+}
+
 const STAGE_DESCRIPTION: Record<JobStage, string> = {
   BOOKED:
     "Your booking fee has been paid and your contract is signed. Your date is secured.",
@@ -48,6 +58,10 @@ const STAGE_OWNER_ACTION: Record<JobStage, string> = {
 
 export function getStageLabel(stage: JobStage): string {
   return STAGE_LABEL[stage]
+}
+
+export function getClientStageLabel(stage: JobStage): string {
+  return CLIENT_STAGE_LABEL[stage]
 }
 
 export function getStageDescription(stage: JobStage): string {

@@ -18,13 +18,13 @@ type LookupResult = {
 }
 
 const STAGE_LABELS: Record<string, string> = {
-  BOOKED: "Booked",
-  QUESTIONNAIRE_SENT: "Questionnaire sent",
-  QUESTIONNAIRE_DONE: "Questionnaire complete",
-  SESSION_COMPLETE: "Session complete",
-  GALLERY_SENT: "Gallery delivered",
-  PAID: "Balance paid",
-  COMPLETE: "Complete",
+  BOOKED: "Booking confirmed",
+  QUESTIONNAIRE_SENT: "Pre-session questionnaire",
+  QUESTIONNAIRE_DONE: "Preparing your session",
+  SESSION_COMPLETE: "Editing in progress",
+  GALLERY_SENT: "Your gallery is ready",
+  PAID: "All settled",
+  COMPLETE: "Session complete",
 }
 
 export const PortalLookupClient = () => {
