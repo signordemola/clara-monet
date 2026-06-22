@@ -1,4 +1,7 @@
-packages: []
+packages:
+  - '.'
+
+trustPolicy: none
 
 allowBuilds:
   sharp: true

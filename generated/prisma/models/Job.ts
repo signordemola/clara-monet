@@ -56,6 +56,8 @@ export type JobMinAggregateOutputType = {
   stripeBalanceIntentId: string | null
   sessionToken: string | null
   contractSignedAt: Date | null
+  contractText: string | null
+  signedName: string | null
   modelReleaseGranted: boolean | null
   galleryUrl: string | null
   galleryDeliveredAt: Date | null
@@ -92,6 +94,8 @@ export type JobMaxAggregateOutputType = {
   stripeBalanceIntentId: string | null
   sessionToken: string | null
   contractSignedAt: Date | null
+  contractText: string | null
+  signedName: string | null
   modelReleaseGranted: boolean | null
   galleryUrl: string | null
   galleryDeliveredAt: Date | null
@@ -128,6 +132,8 @@ export type JobCountAggregateOutputType = {
   stripeBalanceIntentId: number
   sessionToken: number
   contractSignedAt: number
+  contractText: number
+  signedName: number
   modelReleaseGranted: number
   galleryUrl: number
   galleryDeliveredAt: number
@@ -179,6 +185,8 @@ export type JobMinAggregateInputType = {
   stripeBalanceIntentId?: true
   sessionToken?: true
   contractSignedAt?: true
+  contractText?: true
+  signedName?: true
   modelReleaseGranted?: true
   galleryUrl?: true
   galleryDeliveredAt?: true
@@ -215,6 +223,8 @@ export type JobMaxAggregateInputType = {
   stripeBalanceIntentId?: true
   sessionToken?: true
   contractSignedAt?: true
+  contractText?: true
+  signedName?: true
   modelReleaseGranted?: true
   galleryUrl?: true
   galleryDeliveredAt?: true
@@ -251,6 +261,8 @@ export type JobCountAggregateInputType = {
   stripeBalanceIntentId?: true
   sessionToken?: true
   contractSignedAt?: true
+  contractText?: true
+  signedName?: true
   modelReleaseGranted?: true
   galleryUrl?: true
   galleryDeliveredAt?: true
@@ -381,6 +393,8 @@ export type JobGroupByOutputType = {
   stripeBalanceIntentId: string | null
   sessionToken: string
   contractSignedAt: Date | null
+  contractText: string | null
+  signedName: string | null
   modelReleaseGranted: boolean
   galleryUrl: string | null
   galleryDeliveredAt: Date | null
@@ -438,6 +452,8 @@ export type JobWhereInput = {
   stripeBalanceIntentId?: Prisma.StringNullableFilter<"Job"> | string | null
   sessionToken?: Prisma.StringFilter<"Job"> | string
   contractSignedAt?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
+  contractText?: Prisma.StringNullableFilter<"Job"> | string | null
+  signedName?: Prisma.StringNullableFilter<"Job"> | string | null
   modelReleaseGranted?: Prisma.BoolFilter<"Job"> | boolean
   galleryUrl?: Prisma.StringNullableFilter<"Job"> | string | null
   galleryDeliveredAt?:
@@ -526,6 +542,8 @@ export type JobOrderByWithRelationInput = {
   stripeBalanceIntentId?: Prisma.SortOrderInput | Prisma.SortOrder
   sessionToken?: Prisma.SortOrder
   contractSignedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  contractText?: Prisma.SortOrderInput | Prisma.SortOrder
+  signedName?: Prisma.SortOrderInput | Prisma.SortOrder
   modelReleaseGranted?: Prisma.SortOrder
   galleryUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   galleryDeliveredAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -574,6 +592,8 @@ export type JobWhereUniqueInput = Prisma.AtLeast<
       | Date
       | string
       | null
+    contractText?: Prisma.StringNullableFilter<"Job"> | string | null
+    signedName?: Prisma.StringNullableFilter<"Job"> | string | null
     modelReleaseGranted?: Prisma.BoolFilter<"Job"> | boolean
     galleryUrl?: Prisma.StringNullableFilter<"Job"> | string | null
     galleryDeliveredAt?:
@@ -668,6 +688,8 @@ export type JobOrderByWithAggregationInput = {
   stripeBalanceIntentId?: Prisma.SortOrderInput | Prisma.SortOrder
   sessionToken?: Prisma.SortOrder
   contractSignedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  contractText?: Prisma.SortOrderInput | Prisma.SortOrder
+  signedName?: Prisma.SortOrderInput | Prisma.SortOrder
   modelReleaseGranted?: Prisma.SortOrder
   galleryUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   galleryDeliveredAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -737,6 +759,11 @@ export type JobScalarWhereWithAggregatesInput = {
     | Date
     | string
     | null
+  contractText?:
+    | Prisma.StringNullableWithAggregatesFilter<"Job">
+    | string
+    | null
+  signedName?: Prisma.StringNullableWithAggregatesFilter<"Job"> | string | null
   modelReleaseGranted?: Prisma.BoolWithAggregatesFilter<"Job"> | boolean
   galleryUrl?: Prisma.StringNullableWithAggregatesFilter<"Job"> | string | null
   galleryDeliveredAt?:
@@ -814,6 +841,8 @@ export type JobCreateInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -854,6 +883,8 @@ export type JobUncheckedCreateInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -909,6 +940,8 @@ export type JobUpdateInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -1014,6 +1047,8 @@ export type JobUncheckedUpdateInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -1095,6 +1130,8 @@ export type JobCreateManyInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -1149,6 +1186,8 @@ export type JobUpdateManyMutationInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -1250,6 +1289,8 @@ export type JobUncheckedUpdateManyInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -1345,6 +1386,8 @@ export type JobCountOrderByAggregateInput = {
   stripeBalanceIntentId?: Prisma.SortOrder
   sessionToken?: Prisma.SortOrder
   contractSignedAt?: Prisma.SortOrder
+  contractText?: Prisma.SortOrder
+  signedName?: Prisma.SortOrder
   modelReleaseGranted?: Prisma.SortOrder
   galleryUrl?: Prisma.SortOrder
   galleryDeliveredAt?: Prisma.SortOrder
@@ -1388,6 +1431,8 @@ export type JobMaxOrderByAggregateInput = {
   stripeBalanceIntentId?: Prisma.SortOrder
   sessionToken?: Prisma.SortOrder
   contractSignedAt?: Prisma.SortOrder
+  contractText?: Prisma.SortOrder
+  signedName?: Prisma.SortOrder
   modelReleaseGranted?: Prisma.SortOrder
   galleryUrl?: Prisma.SortOrder
   galleryDeliveredAt?: Prisma.SortOrder
@@ -1424,6 +1469,8 @@ export type JobMinOrderByAggregateInput = {
   stripeBalanceIntentId?: Prisma.SortOrder
   sessionToken?: Prisma.SortOrder
   contractSignedAt?: Prisma.SortOrder
+  contractText?: Prisma.SortOrder
+  signedName?: Prisma.SortOrder
   modelReleaseGranted?: Prisma.SortOrder
   galleryUrl?: Prisma.SortOrder
   galleryDeliveredAt?: Prisma.SortOrder
@@ -1739,6 +1786,8 @@ export type JobCreateWithoutSessionTypeInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -1777,6 +1826,8 @@ export type JobUncheckedCreateWithoutSessionTypeInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -1860,6 +1911,8 @@ export type JobScalarWhereInput = {
   stripeBalanceIntentId?: Prisma.StringNullableFilter<"Job"> | string | null
   sessionToken?: Prisma.StringFilter<"Job"> | string
   contractSignedAt?: Prisma.DateTimeNullableFilter<"Job"> | Date | string | null
+  contractText?: Prisma.StringNullableFilter<"Job"> | string | null
+  signedName?: Prisma.StringNullableFilter<"Job"> | string | null
   modelReleaseGranted?: Prisma.BoolFilter<"Job"> | boolean
   galleryUrl?: Prisma.StringNullableFilter<"Job"> | string | null
   galleryDeliveredAt?:
@@ -1929,6 +1982,8 @@ export type JobCreateWithoutInquiryInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -1967,6 +2022,8 @@ export type JobUncheckedCreateWithoutInquiryInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -2050,6 +2107,8 @@ export type JobUpdateWithoutInquiryInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -2153,6 +2212,8 @@ export type JobUncheckedUpdateWithoutInquiryInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -2231,6 +2292,8 @@ export type JobCreateWithoutClientInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -2269,6 +2332,8 @@ export type JobUncheckedCreateWithoutClientInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -2344,6 +2409,8 @@ export type JobCreateWithoutQuestionnaireInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -2383,6 +2450,8 @@ export type JobUncheckedCreateWithoutQuestionnaireInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -2465,6 +2534,8 @@ export type JobUpdateWithoutQuestionnaireInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -2569,6 +2640,8 @@ export type JobUncheckedUpdateWithoutQuestionnaireInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -2648,6 +2721,8 @@ export type JobCreateManySessionTypeInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -2702,6 +2777,8 @@ export type JobUpdateWithoutSessionTypeInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -2805,6 +2882,8 @@ export type JobUncheckedUpdateWithoutSessionTypeInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -2906,6 +2985,8 @@ export type JobUncheckedUpdateManyWithoutSessionTypeInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -2985,6 +3066,8 @@ export type JobCreateManyClientInput = {
   stripeBalanceIntentId?: string | null
   sessionToken: string
   contractSignedAt?: Date | string | null
+  contractText?: string | null
+  signedName?: string | null
   modelReleaseGranted?: boolean
   galleryUrl?: string | null
   galleryDeliveredAt?: Date | string | null
@@ -3039,6 +3122,8 @@ export type JobUpdateWithoutClientInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -3142,6 +3227,8 @@ export type JobUncheckedUpdateWithoutClientInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -3243,6 +3330,8 @@ export type JobUncheckedUpdateManyWithoutClientInput = {
     | Date
     | string
     | null
+  contractText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelReleaseGranted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   galleryUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   galleryDeliveredAt?:
@@ -3327,6 +3416,8 @@ export type JobSelect<
     stripeBalanceIntentId?: boolean
     sessionToken?: boolean
     contractSignedAt?: boolean
+    contractText?: boolean
+    signedName?: boolean
     modelReleaseGranted?: boolean
     galleryUrl?: boolean
     galleryDeliveredAt?: boolean
@@ -3373,6 +3464,8 @@ export type JobSelectCreateManyAndReturn<
     stripeBalanceIntentId?: boolean
     sessionToken?: boolean
     contractSignedAt?: boolean
+    contractText?: boolean
+    signedName?: boolean
     modelReleaseGranted?: boolean
     galleryUrl?: boolean
     galleryDeliveredAt?: boolean
@@ -3418,6 +3511,8 @@ export type JobSelectUpdateManyAndReturn<
     stripeBalanceIntentId?: boolean
     sessionToken?: boolean
     contractSignedAt?: boolean
+    contractText?: boolean
+    signedName?: boolean
     modelReleaseGranted?: boolean
     galleryUrl?: boolean
     galleryDeliveredAt?: boolean
@@ -3459,6 +3554,8 @@ export type JobSelectScalar = {
   stripeBalanceIntentId?: boolean
   sessionToken?: boolean
   contractSignedAt?: boolean
+  contractText?: boolean
+  signedName?: boolean
   modelReleaseGranted?: boolean
   galleryUrl?: boolean
   galleryDeliveredAt?: boolean
@@ -3498,6 +3595,8 @@ export type JobOmit<
   | "stripeBalanceIntentId"
   | "sessionToken"
   | "contractSignedAt"
+  | "contractText"
+  | "signedName"
   | "modelReleaseGranted"
   | "galleryUrl"
   | "galleryDeliveredAt"
@@ -3572,6 +3671,8 @@ export type $JobPayload<
       stripeBalanceIntentId: string | null
       sessionToken: string
       contractSignedAt: Date | null
+      contractText: string | null
+      signedName: string | null
       modelReleaseGranted: boolean
       galleryUrl: string | null
       galleryDeliveredAt: Date | null
@@ -4250,6 +4351,8 @@ export interface JobFieldRefs {
   readonly stripeBalanceIntentId: Prisma.FieldRef<"Job", "String">
   readonly sessionToken: Prisma.FieldRef<"Job", "String">
   readonly contractSignedAt: Prisma.FieldRef<"Job", "DateTime">
+  readonly contractText: Prisma.FieldRef<"Job", "String">
+  readonly signedName: Prisma.FieldRef<"Job", "String">
   readonly modelReleaseGranted: Prisma.FieldRef<"Job", "Boolean">
   readonly galleryUrl: Prisma.FieldRef<"Job", "String">
   readonly galleryDeliveredAt: Prisma.FieldRef<"Job", "DateTime">

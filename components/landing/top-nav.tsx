@@ -4,13 +4,15 @@ import { useEffect, useState } from "react"
 import { Wordmark } from "@/components/brand/wordmark"
 
 export function TopNav() {
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled] = useState(
+    () =>
+      typeof window !== "undefined" && window.scrollY > window.innerHeight * 0.8
+  )
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > window.innerHeight * 0.8)
     }
-    onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
     window.addEventListener("resize", onScroll)
     return () => {

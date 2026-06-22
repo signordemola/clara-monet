@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { render } from "@react-email/components"
 import { BookingLinkEmail } from "@/emails/booking-link"
+import { InquiryDeclinedEmail } from "@/emails/inquiry-declined"
 import { prisma } from "@/lib/db"
 import { requireOwner } from "@/lib/session"
 import { resend } from "@/lib/resend"
@@ -9,7 +10,22 @@ import {
   ApproveInquirySchema,
   DeclineInquirySchema,
 } from "@/schemas/inquiry-action.schema"
-import { generateBookingToken } from "@/lib/tokens"
+import { generateBookingToken, generateSessionToken } from "@/lib/tokens"
+
+export async function GET(
+  _req: Request,
+  { params }: { params: Promise<{ inquiryId: string }> }
+) {
+  const [resolvedParams] = await Promise.all([params, requireOwner()])
+  const { inquiryId } = resolvedParams
+
+  const inquiry = await prisma.inquiry.findUnique({
+    where: { id: inquiryId },
+  })
+
+  if (!inquiry) return apiError(404, "Inquiry not found")
+  return NextResponse.json({ data: inquiry })
+}
 
 export async function POST(req: Request) {
   await requireOwner()
@@ -40,20 +56,32 @@ export async function POST(req: Request) {
     })
     if (!sessionType) return apiError(404, "Session type not found")
 
+    const client = await prisma.client.upsert({
+      where: { email: inquiry.email },
+      update: { name: inquiry.name, phone: inquiry.phone ?? undefined },
+      create: {
+        email: inquiry.email,
+        name: inquiry.name,
+        phone: inquiry.phone ?? null,
+        gdprConsent: false,
+      },
+    })
+
     const bookingToken = generateBookingToken()
+    const sessionToken = generateSessionToken()
     const totalPrice = sessionType.price
     const bookingFee = sessionType.bookingFee
     const balanceAmount = totalPrice - bookingFee
 
     await prisma.job.create({
       data: {
-        clientId: "",
+        clientId: client.id,
         sessionTypeId: sessionType.id,
         inquiryId: inquiry.id,
         totalPrice,
         bookingFee,
         balanceAmount,
-        sessionToken: "",
+        sessionToken,
         sessionDate: result.data.sessionDate
           ? new Date(result.data.sessionDate)
           : null,
@@ -86,9 +114,7 @@ export async function POST(req: Request) {
         subject: `Your booking is ready — Clara Monét Photography`,
         html,
       })
-    } catch {
-      // non-blocking
-    }
+    } catch {}
 
     return NextResponse.json({ success: true, bookingToken })
   }
@@ -103,10 +129,23 @@ export async function POST(req: Request) {
       )
     }
 
-    await prisma.inquiry.update({
+    const inquiry = await prisma.inquiry.update({
       where: { id: result.data.inquiryId },
       data: { status: "DECLINED" },
     })
+
+    try {
+      const html = await render(
+        InquiryDeclinedEmail({ clientName: inquiry.name })
+      )
+
+      await resend.emails.send({
+        from: process.env.EMAIL_FROM!,
+        to: inquiry.email,
+        subject: "Clara Monét Photography",
+        html,
+      })
+    } catch {}
 
     return NextResponse.json({ success: true })
   }

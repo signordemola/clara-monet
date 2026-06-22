@@ -1,10 +1,20 @@
 import { NextResponse } from "next/server"
 import { render } from "@react-email/components"
 import { BookingConfirmedEmail } from "@/emails/booking-confirmed"
+import { QuestionnairePromptEmail } from "@/emails/questionnaire-prompt"
 import { stripe } from "@/lib/stripe"
 import { prisma } from "@/lib/db"
 import { resend } from "@/lib/resend"
 import { generateSessionToken } from "@/lib/tokens"
+import { generateSignedContractPDF } from "@/lib/pdf"
+
+const dateFormatter = new Intl.DateTimeFormat("en-GB", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "Europe/London",
+})
 
 export async function POST(req: Request) {
   const body = await req.text()
@@ -71,6 +81,8 @@ export async function POST(req: Request) {
           bookingFeeStatus: "HELD",
           sessionToken,
           clientId: client.id,
+          stage: "QUESTIONNAIRE_SENT",
+          questionnaireSentAt: new Date(),
         },
       })
 
@@ -79,24 +91,37 @@ export async function POST(req: Request) {
         data: { status: "BOOKED" },
       })
 
+      const portalUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/portal/${sessionToken}`
+      const questionnaireUrl = `${portalUrl}/questionnaire`
+
       try {
-        const html = await render(
+        const pdfBytes = inquiry.job.contractText
+          ? await generateSignedContractPDF({
+              clientName: inquiry.job.signedName ?? client.name,
+              contractText: inquiry.job.contractText,
+            })
+          : null
+
+        const attachments = pdfBytes
+          ? [
+              {
+                filename: "clara-monet-contract.pdf",
+                content: Buffer.from(pdfBytes).toString("base64"),
+              },
+            ]
+          : undefined
+
+        const confirmedHtml = await render(
           BookingConfirmedEmail({
             clientName: client.name,
             sessionType: inquiry.job!.sessionType?.name ?? "your session",
             sessionDate: inquiry.job!.sessionDate
-              ? new Intl.DateTimeFormat("en-GB", {
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                  timeZone: "Europe/London",
-                }).format(inquiry.job!.sessionDate)
+              ? dateFormatter.format(inquiry.job!.sessionDate)
               : "TBC",
             sessionLocation: inquiry.job!.sessionLocation ?? undefined,
             bookingFee: inquiry.job!.bookingFee,
             balanceAmount: inquiry.job!.balanceAmount,
-            portalUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/portal/${sessionToken}`,
+            portalUrl,
           })
         )
 
@@ -104,7 +129,26 @@ export async function POST(req: Request) {
           from: process.env.EMAIL_FROM!,
           to: inquiry.email,
           subject: "You're booked — Clara Monét Photography",
-          html,
+          html: confirmedHtml,
+          attachments,
+        })
+
+        const promptHtml = await render(
+          QuestionnairePromptEmail({
+            clientName: client.name,
+            sessionType: inquiry.job!.sessionType?.name ?? "your session",
+            sessionDate: inquiry.job!.sessionDate
+              ? dateFormatter.format(inquiry.job!.sessionDate)
+              : "TBC",
+            questionnaireUrl,
+          })
+        )
+
+        await resend.emails.send({
+          from: process.env.EMAIL_FROM!,
+          to: inquiry.email,
+          subject: "Help me prepare for your session — Clara Monét Photography",
+          html: promptHtml,
         })
       } catch {
         // non-blocking

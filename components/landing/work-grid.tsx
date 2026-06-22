@@ -6,6 +6,7 @@ import claraImg from "@/public/clara.jpg"
 
 const pieces = [
   {
+    id: "hana-founder",
     src: work1,
     title: "Hana, founder",
     meta: "Personal brand · Hackney",
@@ -15,6 +16,7 @@ const pieces = [
     h2: "h-[640px] lg:h-full",
   },
   {
+    id: "tomas-advocate",
     src: work3,
     title: "Tomás, advocate",
     meta: "Headshot set · Studio",
@@ -24,6 +26,7 @@ const pieces = [
     h2: "h-[420px]",
   },
   {
+    id: "okafor-family",
     src: work2,
     title: "The Okafor family",
     meta: "On location · Victoria Park",
@@ -33,6 +36,7 @@ const pieces = [
     h2: "h-[420px]",
   },
   {
+    id: "imogen-writer",
     src: claraImg,
     title: "Imogen, writer",
     meta: "Personal brand · Day rate",
@@ -42,6 +46,7 @@ const pieces = [
     h2: "h-[460px]",
   },
   {
+    id: "daniel-board-portrait",
     src: work3,
     title: "Daniel, board portrait",
     meta: "Headshot · Director",
@@ -78,9 +83,9 @@ export function WorkGrid() {
         </div>
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-8 lg:grid-rows-2 lg:gap-5">
-          {pieces.map((p, i) => (
+          {pieces.map((p) => (
             <figure
-              key={i}
+              key={p.id}
               className={`group relative overflow-hidden ${p.span} ${p.h2}`}
             >
               <Image

@@ -8,8 +8,8 @@ export async function GET(
   _req: Request,
   { params }: { params: Promise<{ jobId: string }> }
 ) {
-  await requireOwner()
-  const { jobId } = await params
+  const [resolvedParams] = await Promise.all([params, requireOwner()])
+  const { jobId } = resolvedParams
 
   const job = await prisma.job.findUnique({
     where: { id: jobId },
@@ -31,9 +31,7 @@ export async function PATCH(
   { params }: { params: Promise<{ jobId: string }> }
 ) {
   await requireOwner()
-  const { jobId } = await params
-
-  const body = await req.json()
+  const [{ jobId }, body] = await Promise.all([params, req.json()])
   const result = JobNotesSchema.safeParse(body)
 
   if (!result.success) {

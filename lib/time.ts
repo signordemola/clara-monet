@@ -2,7 +2,7 @@ import { fromZonedTime } from "date-fns-tz"
 
 export const PROVIDER_TZ = "Europe/London"
 
-export function providerDate(dateStr: string, timeStr: string): Date {
+function providerDate(dateStr: string, timeStr: string): Date {
   const [year, month, day] = dateStr.split("-").map(Number)
   const [hours, minutes] = timeStr.split(":").map(Number)
 

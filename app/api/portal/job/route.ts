@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 import { prisma } from "@/lib/db"
 import { apiError } from "@/lib/api-error"
-import { STAGE_LABEL, STAGE_DESCRIPTION } from "@/lib/stages"
+import { getStageLabel, getStageDescription } from "@/lib/stages"
 import { formatCurrency } from "@/lib/utils"
 
 const JobStatusSchema = z.object({
@@ -37,8 +37,8 @@ export async function POST(req: Request) {
   return NextResponse.json({
     data: {
       stage: job.stage,
-      stageLabel: STAGE_LABEL[job.stage],
-      stageDescription: STAGE_DESCRIPTION[job.stage],
+      stageLabel: getStageLabel(job.stage),
+      stageDescription: getStageDescription(job.stage),
       clientName: job.client.name,
       sessionType: job.sessionType.name,
       sessionDate: job.sessionDate,

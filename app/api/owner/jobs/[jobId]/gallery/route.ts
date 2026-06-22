@@ -12,9 +12,7 @@ export async function POST(
   { params }: { params: Promise<{ jobId: string }> }
 ) {
   await requireOwner()
-  const { jobId } = await params
-
-  const body = await req.json()
+  const [{ jobId }, body] = await Promise.all([params, req.json()])
   const result = GalleryDeliverySchema.safeParse(body)
 
   if (!result.success) {

@@ -1,5 +1,10 @@
 import { cn } from "@/lib/utils"
 
+const PHOTOGRAPHY = "PHOTOGRAPHY".split("").map((char, i) => ({
+  id: `photo-${i}`,
+  char,
+}))
+
 interface WordmarkProps {
   className?: string
   tone?: "ink" | "paper"
@@ -91,8 +96,8 @@ export function Wordmark({
           )}
           aria-label="Photography"
         >
-          {"PHOTOGRAPHY".split("").map((char, i) => (
-            <span key={i} aria-hidden="true">
+          {PHOTOGRAPHY.map(({ id, char }) => (
+            <span key={id} aria-hidden="true">
               {char}
             </span>
           ))}

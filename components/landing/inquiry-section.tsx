@@ -1,33 +1,56 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { SESSION_TYPES, type SessionType, formatPence } from "@/lib/mock-data"
-import { submitInquiry } from "@/lib/actions"
 import { Field, FieldLabel } from "@/components/ui/field"
+
+const CURRENT_YEAR = new Date().getFullYear()
+
+const SELLING_POINTS = [
+  "Personal reply, never an autoresponder thread",
+  "Tailored booking link with full contract",
+  "25% booking fee · balance due with gallery",
+]
 
 export function InquirySection() {
   const router = useRouter()
-  const [pending, startTransition] = useTransition()
+  const [pending, setPending] = useState(false)
   const [sessionType, setSessionType] = useState<SessionType>("personal-brand")
 
-  const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setPending(true)
 
     const formData = new FormData(e.currentTarget)
-    formData.set("sessionTypePref", sessionType)
+    const body = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      preferredDate: formData.get("preferredDate") || null,
+      sessionTypePref: sessionType,
+      message: formData.get("message"),
+    }
 
-    startTransition(async () => {
-      const result = await submitInquiry(formData)
+    try {
+      const res = await fetch("/api/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      })
+      const result = await res.json()
 
-      if (!result.success) {
-        toast.error(result.error ?? "Something went wrong")
+      if (!res.ok || !result.success) {
+        toast.error(result.error?.message ?? "Something went wrong")
+        setPending(false)
         return
       }
 
       router.push("/inquiry/submitted")
-    })
+    } catch {
+      toast.error("Something went wrong")
+      setPending(false)
+    }
   }
 
   return (
@@ -53,11 +76,7 @@ export function InquirySection() {
           </p>
 
           <ul className="mt-10 space-y-4 text-sm text-ink/75">
-            {[
-              "Personal reply, never an autoresponder thread",
-              "Tailored booking link with full contract",
-              "25% booking fee · balance due with gallery",
-            ].map((t) => (
+            {SELLING_POINTS.map((t) => (
               <li key={t} className="flex items-start gap-3">
                 <span className="mt-2 h-1 w-3 shrink-0 bg-clay" />
                 {t}
@@ -71,43 +90,55 @@ export function InquirySection() {
           className="relative border border-hairline bg-paper p-8 lg:col-span-7 lg:p-12"
         >
           <div className="absolute -top-3 left-8 bg-paper-warm px-3 text-[10px] tracking-[0.3em] text-clay uppercase">
-            Inquiry · No. {new Date().getFullYear()}
+            Inquiry · No. {CURRENT_YEAR}
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2">
             <Field orientation="vertical">
-              <FieldLabel className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
+              <FieldLabel
+                htmlFor="inquiry-name"
+                className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase"
+              >
                 Your name
               </FieldLabel>
               <input
+                id="inquiry-name"
                 name="name"
                 required
+                aria-label="Your name"
                 className="w-full border border-ink/20 bg-paper px-4 py-3 text-base text-ink transition-colors placeholder:text-ink/60 hover:border-ink/50 focus:border-ink focus:outline-none"
               />
             </Field>
             <Field orientation="vertical">
-              <FieldLabel className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
+              <FieldLabel
+                htmlFor="inquiry-email"
+                className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase"
+              >
                 Email
               </FieldLabel>
               <input
+                id="inquiry-email"
                 name="email"
                 type="email"
                 required
+                aria-label="Email"
                 className="w-full border border-ink/20 bg-paper px-4 py-3 text-base text-ink transition-colors placeholder:text-ink/60 hover:border-ink/50 focus:border-ink focus:outline-none"
               />
             </Field>
           </div>
 
           <div className="mt-6">
-            <label className="mb-3 block text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
+            <p className="mb-3 text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
               Session type
-            </label>
+            </p>
             <div className="grid grid-cols-1 gap-px bg-hairline sm:grid-cols-3">
               {(Object.keys(SESSION_TYPES) as SessionType[]).map((k) => (
                 <button
                   type="button"
                   key={k}
                   onClick={() => setSessionType(k)}
+                  aria-pressed={sessionType === k}
+                  aria-label={`${SESSION_TYPES[k].name} from ${formatPence(SESSION_TYPES[k].price)}`}
                   className={`px-3 py-4 text-left transition ${
                     sessionType === k
                       ? "bg-ink text-paper"
@@ -131,22 +162,32 @@ export function InquirySection() {
 
           <div className="mt-6 grid gap-6 sm:grid-cols-2">
             <Field orientation="vertical">
-              <FieldLabel className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
+              <FieldLabel
+                htmlFor="inquiry-preferred-date"
+                className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase"
+              >
                 Preferred window
               </FieldLabel>
               <input
+                id="inquiry-preferred-date"
                 name="preferredDate"
                 placeholder="e.g. late June, weekday mornings"
+                aria-label="Preferred window"
                 className="w-full border border-ink/20 bg-paper px-4 py-3 text-base text-ink transition-colors placeholder:text-ink/60 hover:border-ink/50 focus:border-ink focus:outline-none"
               />
             </Field>
             <Field orientation="vertical">
-              <FieldLabel className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
+              <FieldLabel
+                htmlFor="inquiry-referral"
+                className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase"
+              >
                 How did you find me?
               </FieldLabel>
               <input
+                id="inquiry-referral"
                 name="referral"
                 placeholder="Instagram, referral, search…"
+                aria-label="How did you find me?"
                 className="w-full border border-ink/20 bg-paper px-4 py-3 text-base text-ink transition-colors placeholder:text-ink/60 hover:border-ink/50 focus:border-ink focus:outline-none"
               />
             </Field>
@@ -154,13 +195,18 @@ export function InquirySection() {
 
           <div className="mt-6">
             <Field orientation="vertical">
-              <FieldLabel className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase">
+              <FieldLabel
+                htmlFor="inquiry-message"
+                className="text-[10px] font-medium tracking-[0.24em] text-ink/85 uppercase"
+              >
                 Tell me about the session
               </FieldLabel>
               <textarea
+                id="inquiry-message"
                 name="message"
                 required
                 rows={5}
+                aria-label="Tell me about the session"
                 placeholder="Who's it for, what's the moment, anything you've been thinking about…"
                 className="w-full resize-none border border-ink/20 bg-paper px-4 py-3 text-base text-ink transition-colors placeholder:text-ink/60 hover:border-ink/50 focus:border-ink focus:outline-none"
               />
@@ -170,6 +216,7 @@ export function InquirySection() {
           <label className="mt-6 flex cursor-pointer items-start gap-3 text-xs text-ink/80">
             <input
               type="checkbox"
+              name="gdprConsent"
               required
               className="mt-0.5 h-4 w-4 accent-ink"
             />

@@ -1,28 +1,19 @@
 # Email Templates
 
-Four core templates wire into the demo flow. The remaining eight can be added when dashboard manual-trigger buttons are built in Phase 9.
+Eight templates cover the client lifecycle from inquiry to review request. They are sent inline by route handlers rather than via a scheduled cron.
 
-## Active (Phase 5)
+## Active
 
 | Template                      | Triggers                                      | API Route                                      |
 | ----------------------------- | --------------------------------------------- | ---------------------------------------------- |
 | `inquiry-acknowledgement.tsx` | Client submits inquiry form                   | `app/api/inquiry/route.ts`                     |
 | `booking-link.tsx`            | Clara approves inquiry                        | `app/api/owner/inquiries/[inquiryId]/route.ts` |
 | `booking-confirmed.tsx`       | Booking fee payment succeeds (Stripe webhook) | `app/api/stripe/webhook/route.ts`              |
+| `questionnaire-prompt.tsx`    | Booking is confirmed                          | `app/api/stripe/webhook/route.ts`              |
+| `editing-underway.tsx`        | Clara advances stage to SESSION_COMPLETE      | `app/api/owner/jobs/[jobId]/stage/route.ts`    |
 | `gallery-delivery.tsx`        | Clara delivers gallery                        | `app/api/owner/jobs/[jobId]/gallery/route.ts`  |
-
-## To Add (Phase 9)
-
-| Template                     | When                                                  |
-| ---------------------------- | ----------------------------------------------------- |
-| `questionnaire-prompt.tsx`   | Clara manually sends questionnaire (dashboard button) |
-| `questionnaire-reminder.tsx` | Clara manually sends reminder if overdue              |
-| `session-reminder-48h.tsx`   | Clara manually sends 48hr reminder                    |
-| `session-reminder-24h.tsx`   | Clara manually sends 24hr reminder                    |
-| `editing-underway.tsx`       | Clara advances stage to SESSION_COMPLETE              |
-| `balance-reminder.tsx`       | Clara manually sends balance chaser                   |
-| `review-request.tsx`         | Clara advances stage to COMPLETE                      |
-| `inquiry-declined.tsx`       | Clara declines inquiry                                |
+| `review-request.tsx`          | Clara advances stage to COMPLETE              | `app/api/owner/jobs/[jobId]/stage/route.ts`    |
+| `inquiry-declined.tsx`        | Clara declines inquiry                        | `app/api/owner/inquiries/[inquiryId]/route.ts` |
 
 ## Brand Tokens
 

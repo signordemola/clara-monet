@@ -5,7 +5,12 @@ import { prisma } from "@/lib/db"
 import { apiError } from "@/lib/api-error"
 import { generateContractText } from "@/lib/contract"
 import { generateSignedContractPDF } from "@/lib/pdf"
-import { generateSessionToken } from "@/lib/tokens"
+
+const timeFormatter = new Intl.DateTimeFormat("en-GB", {
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZone: "Europe/London",
+})
 
 const TokenSchema = z.object({
   bookingToken: z.string().min(1),
@@ -56,11 +61,7 @@ export async function POST(req: Request) {
     sessionTypeName: job.sessionType.name,
     sessionDate: job.sessionDate?.toISOString() ?? "TBC",
     sessionTime: job.sessionDate
-      ? new Intl.DateTimeFormat("en-GB", {
-          hour: "2-digit",
-          minute: "2-digit",
-          timeZone: "Europe/London",
-        }).format(job.sessionDate)
+      ? timeFormatter.format(job.sessionDate)
       : "TBC",
     sessionLocation: job.sessionLocation ?? "TBC",
     imageCount: job.sessionType.imageCount,
@@ -76,14 +77,13 @@ export async function POST(req: Request) {
     contractText,
   })
 
-  const sessionToken = generateSessionToken()
-
   await prisma.job.update({
     where: { id: job.id },
     data: {
       contractSignedAt: new Date(),
+      contractText,
+      signedName: signResult.data.typedName,
       modelReleaseGranted: signResult.data.modelRelease,
-      sessionToken,
     },
   })
 
@@ -98,5 +98,5 @@ export async function POST(req: Request) {
     })
   }
 
-  return NextResponse.json({ signed: true, sessionToken })
+  return NextResponse.json({ signed: true })
 }

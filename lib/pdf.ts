@@ -11,8 +11,10 @@ export async function generateSignedContractPDF({
   contractText,
 }: ContractPDFParams): Promise<Uint8Array> {
   const doc = await PDFDocument.create()
-  const font = await doc.embedFont(StandardFonts.TimesRoman)
-  const boldFont = await doc.embedFont(StandardFonts.TimesRomanBold)
+  const [font, boldFont] = await Promise.all([
+    doc.embedFont(StandardFonts.TimesRoman),
+    doc.embedFont(StandardFonts.TimesRomanBold),
+  ])
   const fontSize = 10
   const margin = 50
   const pageWidth = 595

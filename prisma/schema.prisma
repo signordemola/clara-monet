@@ -93,7 +93,9 @@ model Job {
 
   sessionToken           String        @unique
   contractSignedAt       DateTime?
-  modelReleaseGranted    Boolean       @default(false)
+  contractText           String?
+  signedName             String?
+  modelReleaseGranted    Boolean  @default(false)
 
   questionnaire          Questionnaire?
 

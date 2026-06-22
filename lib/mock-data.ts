@@ -46,25 +46,3 @@ export const SESSION_TYPES: Record<
 
 export const formatPence = (p: number) =>
   `£${(p / 100).toLocaleString("en-GB", { minimumFractionDigits: 0 })}`
-
-export const formatLondonDate = (iso: string) => {
-  const d = new Date(iso)
-  return d.toLocaleDateString("en-GB", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  })
-}
-
-export const formatLondonTime = (iso: string) =>
-  new Date(iso).toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-  })
-
-export const formatShort = (iso: string) =>
-  new Date(iso).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-  })

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { Toaster } from "@/components/ui/sonner"
 import { LenisProvider } from "@/components/landing/lenis-provider"
+import { Providers } from "@/components/providers"
 
 export const metadata: Metadata = {
   title: "Clara Monét | Portrait Photography East London",
@@ -41,7 +42,9 @@ export default function RootLayout({
     >
       <body>
         <LenisProvider>
-          <TooltipProvider>{children}</TooltipProvider>
+          <Providers>
+            <TooltipProvider>{children}</TooltipProvider>
+          </Providers>
         </LenisProvider>
         <Toaster />
       </body>

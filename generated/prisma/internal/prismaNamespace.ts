@@ -1013,6 +1013,8 @@ export const JobScalarFieldEnum = {
   stripeBalanceIntentId: "stripeBalanceIntentId",
   sessionToken: "sessionToken",
   contractSignedAt: "contractSignedAt",
+  contractText: "contractText",
+  signedName: "signedName",
   modelReleaseGranted: "modelReleaseGranted",
   galleryUrl: "galleryUrl",
   galleryDeliveredAt: "galleryDeliveredAt",
