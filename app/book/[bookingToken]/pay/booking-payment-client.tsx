@@ -1,8 +1,14 @@
 "use client"
 
+import { loadStripe } from "@stripe/stripe-js"
+import { Elements } from "@stripe/react-stripe-js"
 import { useCreateBookingCheckout } from "@/hooks/use-booking"
 import { BookingPaymentForm } from "@/components/booking/booking-payment-form"
 import { Button } from "@/components/ui/button"
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+)
 
 export const BookingPaymentClient = ({
   bookingToken,
@@ -23,5 +29,12 @@ export const BookingPaymentClient = ({
     )
   }
 
-  return <BookingPaymentForm bookingToken={bookingToken} />
+  return (
+    <Elements
+      stripe={stripePromise}
+      options={{ clientSecret: checkout.data.clientSecret }}
+    >
+      <BookingPaymentForm bookingToken={bookingToken} />
+    </Elements>
+  )
 }

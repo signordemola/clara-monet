@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { notFound, redirect } from "next/navigation"
 import { prisma } from "@/lib/db"
-import { StripeProvider } from "@/components/portal/stripe-provider"
 import { BookingPaymentClient } from "./booking-payment-client"
 import { BookingProgress } from "@/components/booking/booking-progress"
 import { formatCurrency } from "@/lib/utils"
@@ -44,8 +43,8 @@ export default async function BookingPayPage({
   }
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-2xl flex-col gap-8 px-6 py-12">
-      <header className="flex flex-col gap-4">
+    <main className="mx-auto flex min-h-dvh max-w-2xl flex-col items-center justify-center gap-8 px-6 py-12">
+      <header className="flex w-full flex-col gap-4">
         <BookingProgress step={2} />
         <h1 className="font-display text-3xl font-light tracking-tight md:text-4xl">
           Pay booking fee
@@ -56,15 +55,9 @@ export default async function BookingPayPage({
         </p>
       </header>
 
-      <section className="border border-hairline bg-card p-6">
-        <StripeProvider>
-          <BookingPaymentClient bookingToken={bookingToken} />
-        </StripeProvider>
+      <section className="w-full border border-hairline bg-card p-6">
+        <BookingPaymentClient bookingToken={bookingToken} />
       </section>
-
-      <p className="text-xs text-muted-foreground">
-        Test card: 4242 4242 4242 4242 · any future date · any CVC
-      </p>
     </main>
   )
 }

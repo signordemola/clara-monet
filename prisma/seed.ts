@@ -699,6 +699,8 @@ async function main() {
         modelRelease: true,
       },
     })
+    // Re-stagger after questionnaire bumped updatedAt
+    await prisma.$executeRaw`UPDATE "Job" SET "updatedAt" = ${thisWeek(0, 17)} WHERE id = ${marcusJob.id}`
   }
 
   // Amara personal brand (SESSION_COMPLETE)
@@ -723,6 +725,8 @@ async function main() {
         modelRelease: true,
       },
     })
+    // Re-stagger after questionnaire bumped updatedAt
+    await prisma.$executeRaw`UPDATE "Job" SET "updatedAt" = ${thisWeek(1, 18)} WHERE id = ${amaraJob.id}`
   }
 
   // Priya family (PAID)
