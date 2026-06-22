@@ -40,13 +40,6 @@ export function SiteFooter() {
               >
                 Client portal
               </Link>
-              <br />
-              <Link
-                href="/owner/login"
-                className="inline-block text-ink/60 transition hover:text-clay"
-              >
-                Studio login
-              </Link>
             </p>
           </div>
         </div>
