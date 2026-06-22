@@ -31,6 +31,13 @@ export default async function ClientDetailPage({
 
   return (
     <div className="flex flex-col gap-8">
+      <Link
+        href="/owner/clients"
+        className="text-xs text-muted-foreground transition hover:text-ink"
+      >
+        ← All clients
+      </Link>
+
       <header className="flex flex-col gap-2">
         <p className="text-[10px] font-medium tracking-[0.24em] text-clay uppercase">
           Client
@@ -60,9 +67,9 @@ export default async function ClientDetailPage({
           </p>
         </div>
         <div className="border border-hairline bg-card p-4">
-          <p className="text-xs text-muted-foreground">Model release</p>
+          <p className="text-xs text-muted-foreground">Marketing consent</p>
           <p className="text-sm">
-            {client.marketingConsent ? "Granted" : "Not granted"}
+            {client.marketingConsent ? "Opted in" : "Opted out"}
           </p>
         </div>
         <div className="border border-hairline bg-card p-4">

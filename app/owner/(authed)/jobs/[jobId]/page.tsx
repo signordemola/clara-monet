@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { getJobDetail, getClientHistory } from "@/lib/queries/jobs"
@@ -32,6 +33,13 @@ export default async function JobDetailPage({
   return (
     <div className="flex flex-col gap-8 lg:flex-row">
       <div className="flex flex-1 flex-col gap-8">
+        <Link
+          href="/owner/jobs"
+          className="text-xs text-muted-foreground transition hover:text-ink"
+        >
+          ← All jobs
+        </Link>
+
         <header className="flex flex-col gap-2">
           <p className="text-[10px] font-medium tracking-[0.24em] text-clay uppercase">
             {job.sessionType.name}

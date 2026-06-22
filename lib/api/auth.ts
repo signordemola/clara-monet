@@ -10,6 +10,7 @@ async function readError(res: Response): Promise<string> {
 }
 
 export const login = async (input: {
+  email: string
   password: string
 }): Promise<ApiSuccess> => {
   const res = await fetch("/api/owner/auth", {

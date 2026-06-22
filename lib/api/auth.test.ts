@@ -13,13 +13,19 @@ describe("login", () => {
     })
     vi.stubGlobal("fetch", mockFetch)
 
-    const result = await login({ password: "correct" })
+    const result = await login({
+      email: "hello@claramonet.co.uk",
+      password: "correct",
+    })
 
     expect(result).toEqual({ success: true })
     expect(mockFetch).toHaveBeenCalledWith("/api/owner/auth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password: "correct" }),
+      body: JSON.stringify({
+        email: "hello@claramonet.co.uk",
+        password: "correct",
+      }),
     })
   })
 
@@ -31,9 +37,9 @@ describe("login", () => {
     })
     vi.stubGlobal("fetch", mockFetch)
 
-    await expect(login({ password: "wrong" })).rejects.toThrow(
-      "Invalid password"
-    )
+    await expect(
+      login({ email: "hello@claramonet.co.uk", password: "wrong" })
+    ).rejects.toThrow("Invalid password")
   })
 
   it("throws an error when response has no error body", async () => {
@@ -44,7 +50,9 @@ describe("login", () => {
     })
     vi.stubGlobal("fetch", mockFetch)
 
-    await expect(login({ password: "x" })).rejects.toThrow()
+    await expect(
+      login({ email: "hello@claramonet.co.uk", password: "x" })
+    ).rejects.toThrow()
   })
 })
 

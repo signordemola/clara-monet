@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Field, FieldLabel, FieldDescription } from "@/components/ui/field"
+import { Field, FieldLabel } from "@/components/ui/field"
 import { Badge } from "@/components/ui/badge"
 
 const ApproveFormSchema = z.object({
@@ -34,6 +34,7 @@ type DeclineFormValues = z.infer<typeof DeclineFormSchema>
 
 type SessionTypeOption = {
   id: string
+  slug: string
   name: string
   duration: number
   price: number
@@ -97,7 +98,7 @@ const ApproveCard = ({
     defaultValues: {
       sessionTypeId: defaultSessionTypeId ?? sessionTypeOptions[0]?.id ?? "",
       sessionDate: defaultDate ?? "",
-      sessionLocation: "",
+      sessionLocation: "Hackney studio",
       ownerMessage: "",
     },
   })
@@ -143,7 +144,11 @@ const ApproveCard = ({
           onValueChange={(v) => v && form.setValue("sessionTypeId", v)}
         >
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Choose a session" />
+            <SelectValue placeholder="Choose a session">
+              {sessionTypeOptions.find((o) => o.id === sessionTypeId)
+                ? `${sessionTypeOptions.find((o) => o.id === sessionTypeId)!.name} · ${sessionTypeOptions.find((o) => o.id === sessionTypeId)!.duration} min`
+                : "Choose a session"}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {sessionTypeOptions.map((opt) => (
@@ -163,7 +168,11 @@ const ApproveCard = ({
       <div className="grid gap-3 sm:grid-cols-2">
         <Field>
           <FieldLabel>Date</FieldLabel>
-          <Input type="datetime-local" {...form.register("sessionDate")} />
+          <Input
+            type="datetime-local"
+            min={new Date().toISOString().slice(0, 16)}
+            {...form.register("sessionDate")}
+          />
         </Field>
         <Field>
           <FieldLabel>Location</FieldLabel>
@@ -181,7 +190,6 @@ const ApproveCard = ({
           placeholder="Looking forward to this one — I've got a few ideas for the lake path."
           {...form.register("ownerMessage")}
         />
-        <FieldDescription>Included in the booking email.</FieldDescription>
       </Field>
 
       <div className="flex items-center justify-end gap-3">
@@ -226,8 +234,8 @@ const DeclineCard = ({ inquiryId }: DeclineCardProps) => {
         <h3 className="font-display text-lg font-light tracking-tight">
           Decline
         </h3>
-        <span className="text-[10px] font-medium tracking-[0.24em] text-ink/60 uppercase">
-          Decline
+        <span className="text-[10px] font-medium tracking-[0.24em] text-destructive/60 uppercase">
+          Pass
         </span>
       </div>
 
@@ -238,15 +246,12 @@ const DeclineCard = ({ inquiryId }: DeclineCardProps) => {
           placeholder="Fully booked for that window. Happy to recommend a colleague."
           {...form.register("declineReason")}
         />
-        <FieldDescription>
-          Saved against the inquiry. No email is sent.
-        </FieldDescription>
       </Field>
 
       <div className="flex items-center justify-end gap-3">
         <Button
           type="submit"
-          variant="outline"
+          variant="destructive"
           disabled={decline.isPending}
           className="min-h-11"
         >

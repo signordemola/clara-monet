@@ -1,0 +1,6 @@
+Clara Monét Photography — Owner Login
+======================================
+
+URL:      http://localhost:3000/owner/login
+Email:    hello@claramonet.co.uk
+Password: changeme123

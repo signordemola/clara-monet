@@ -20,7 +20,7 @@ export default async function InquiriesPage() {
           {inquiries.length} {inquiries.length === 1 ? "inquiry" : "inquiries"}
         </h2>
         <p className="text-sm text-muted-foreground">
-          Sorted: NEW first, then most recent.
+          New inquiries first, then most recent.
         </p>
       </header>
 

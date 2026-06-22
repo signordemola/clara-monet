@@ -16,12 +16,19 @@ export async function POST(req: Request) {
     )
   }
 
+  const submittedEmail = result.data.email.toLowerCase()
+  const ownerEmail = (process.env.OWNER_EMAIL ?? "").toLowerCase()
+
+  if (submittedEmail !== ownerEmail) {
+    return apiError(401, "Invalid credentials")
+  }
+
   const hash = createHash("sha256").update(result.data.password).digest("hex")
   const expected = Buffer.from(hash, "hex")
   const actual = Buffer.from(process.env.OWNER_PASSWORD_HASH!, "hex")
 
   if (expected.length !== actual.length || !timingSafeEqual(expected, actual)) {
-    return apiError(401, "Invalid password")
+    return apiError(401, "Invalid credentials")
   }
 
   const session = await getSession()

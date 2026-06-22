@@ -9,6 +9,8 @@ A studio management system for a UK portrait photography business. Handles the f
 - **Booking flow** where clients sign a contract and pay a booking fee via Stripe
 - **Client portal** to track session progress, submit a questionnaire, and pay the balance
 - **Job pipeline** to manage sessions from booking through delivery
+- **Client directory** with contact details, GDPR consent status, and session history
+- **Service settings** to edit session type pricing and booking fees inline
 
 ## Tech stack
 

@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Field, FieldLabel } from "@/components/ui/field"
 
 const LoginFormSchema = z.object({
+  email: z.string().email("Enter a valid email"),
   password: z.string().min(1, "Password is required"),
 })
 type LoginFormValues = z.infer<typeof LoginFormSchema>
@@ -20,7 +21,7 @@ export const LoginForm = () => {
   const login = useLogin()
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(LoginFormSchema),
-    defaultValues: { password: "" },
+    defaultValues: { email: "", password: "" },
   })
 
   useEffect(() => {
@@ -41,10 +42,27 @@ export const LoginForm = () => {
         Sign in
       </h2>
       <p className="mt-2 text-sm text-muted-foreground">
-        Enter the studio password.
+        Enter your studio credentials.
       </p>
 
       <div className="mt-8 flex flex-col gap-4">
+        <Field>
+          <FieldLabel htmlFor="email">Email</FieldLabel>
+          <Input
+            id="email"
+            type="email"
+            autoComplete="email"
+            placeholder="hello@claramonet.co.uk"
+            aria-invalid={!!form.formState.errors.email}
+            {...form.register("email")}
+          />
+          {form.formState.errors.email && (
+            <p className="text-xs text-destructive">
+              {form.formState.errors.email.message}
+            </p>
+          )}
+        </Field>
+
         <Field>
           <FieldLabel htmlFor="password">Password</FieldLabel>
           <Input

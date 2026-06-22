@@ -44,13 +44,19 @@ describe("useLogin", () => {
     const { result } = renderHook(() => useLogin(), { wrapper: makeWrapper() })
 
     await act(async () => {
-      result.current.mutate({ password: "correct" })
+      result.current.mutate({
+        email: "hello@claramonet.co.uk",
+        password: "correct",
+      })
     })
 
     await waitFor(() => {
       expect(mockLoginApi).toHaveBeenCalled()
     })
-    expect(mockLoginApi.mock.calls[0]?.[0]).toEqual({ password: "correct" })
+    expect(mockLoginApi.mock.calls[0]?.[0]).toEqual({
+      email: "hello@claramonet.co.uk",
+      password: "correct",
+    })
     await waitFor(() => {
       expect(mockPush).toHaveBeenCalledWith("/owner/dashboard")
     })
@@ -62,7 +68,10 @@ describe("useLogin", () => {
     const { result } = renderHook(() => useLogin(), { wrapper: makeWrapper() })
 
     await act(async () => {
-      result.current.mutate({ password: "wrong" })
+      result.current.mutate({
+        email: "hello@claramonet.co.uk",
+        password: "wrong",
+      })
     })
 
     await waitFor(() => {

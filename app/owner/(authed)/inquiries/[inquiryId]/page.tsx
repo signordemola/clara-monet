@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import {
@@ -39,6 +40,13 @@ export default async function InquiryDetailPage({
 
   return (
     <div className="flex flex-col gap-10">
+      <Link
+        href="/owner/inquiries"
+        className="text-xs text-muted-foreground transition hover:text-ink"
+      >
+        ← All inquiries
+      </Link>
+
       <header className="flex flex-col gap-3">
         <div className="flex items-baseline justify-between gap-3">
           <h2 className="font-display text-3xl font-light tracking-tight md:text-4xl">
@@ -131,7 +139,7 @@ export default async function InquiryDetailPage({
           defaultSessionTypeId={
             detail.inquiry.sessionTypePref
               ? sessionTypes.find(
-                  (s) => s.id === detail.inquiry.sessionTypePref
+                  (s) => s.slug === detail.inquiry.sessionTypePref
                 )?.id
               : undefined
           }

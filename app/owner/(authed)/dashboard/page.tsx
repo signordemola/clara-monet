@@ -31,8 +31,7 @@ export default async function DashboardPage() {
           Good day, Clara.
         </h2>
         <p className="text-sm text-muted-foreground">
-          Newest first. Approve, decline, or open an inquiry for the full
-          thread.
+          Here&apos;s what&apos;s happening across your studio this week.
         </p>
       </header>
 

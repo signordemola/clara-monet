@@ -43,6 +43,7 @@ export type InquiryDetail = {
 
 export type SessionTypeOption = {
   id: string
+  slug: string
   name: string
   duration: number
   price: number
@@ -203,7 +204,7 @@ export const listSessionTypeOptions = async (): Promise<
   const rows = await prisma.sessionType.findMany({
     where: { isActive: true },
     orderBy: { displayOrder: "asc" },
-    select: { id: true, name: true, duration: true, price: true },
+    select: { id: true, slug: true, name: true, duration: true, price: true },
   })
   return rows
 }
