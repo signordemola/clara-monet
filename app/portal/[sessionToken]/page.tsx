@@ -23,15 +23,19 @@ export async function generateMetadata({
 
 export default async function PortalStatusPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ sessionToken: string }>
+  searchParams: Promise<Record<string, string | undefined>>
 }) {
-  const { sessionToken } = await params
+  const [{ sessionToken }, query] = await Promise.all([params, searchParams])
   const job = await prisma.job.findUnique({
     where: { sessionToken },
     include: { client: true, sessionType: true },
   })
   if (!job) notFound()
+
+  const paymentSuccess = query.redirect_status === "succeeded"
 
   const showQuestionnaireLink = job.stage === "QUESTIONNAIRE_SENT"
   const showInvoiceLink =
@@ -57,6 +61,17 @@ export default async function PortalStatusPage({
             : "Date to be confirmed"}
         </p>
       </header>
+
+      {paymentSuccess && (
+        <section className="border border-sage/40 bg-sage/10 p-5">
+          <p className="text-sm font-medium text-ink">
+            Payment received — thank you.
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Your balance has been settled. Clara will be in touch shortly.
+          </p>
+        </section>
+      )}
 
       <section className="border border-hairline bg-card p-6">
         <h2 className="mb-4 font-display text-lg font-light tracking-tight">

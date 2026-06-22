@@ -156,28 +156,24 @@ export async function POST(req: Request) {
     }
 
     if (paymentType === "balance") {
-      const existingJob = await prisma.job.findFirst({
-        where: { stripeBalanceIntentId: paymentIntent.id },
-      })
-      if (existingJob) {
-        return NextResponse.json({ received: true })
-      }
-
       const job = await prisma.job.findFirst({
         where: { id: metadata.jobId },
       })
 
-      if (job && job.balanceStatus === "PENDING") {
-        await prisma.job.update({
-          where: { id: job.id },
-          data: {
-            stripeBalanceIntentId: paymentIntent.id,
-            balanceStatus: "PAID",
-            balancePaidAt: new Date(),
-            stage: "PAID",
-          },
-        })
+      if (!job || job.balanceStatus === "PAID") {
+        // Already processed or job not found — idempotent exit
+        return NextResponse.json({ received: true })
       }
+
+      await prisma.job.update({
+        where: { id: job.id },
+        data: {
+          stripeBalanceIntentId: paymentIntent.id,
+          balanceStatus: "PAID",
+          balancePaidAt: new Date(),
+          stage: "PAID",
+        },
+      })
     }
   }
 

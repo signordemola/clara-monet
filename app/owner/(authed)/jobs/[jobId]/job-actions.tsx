@@ -52,7 +52,7 @@ const StageAction = ({
       )
     case "GALLERY_SENT":
       return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           <p className="text-sm text-muted-foreground">
             {getOwnerNextAction(job.stage)}
           </p>
@@ -60,6 +60,14 @@ const StageAction = ({
             <p className="text-xs text-muted-foreground">
               Balance due by {formatDate(job.balanceDueAt)}
             </p>
+          )}
+          {job.balanceStatus === "PAID" && (
+            <Button
+              onClick={() => advance.mutate(job.id)}
+              disabled={advance.isPending}
+            >
+              {advance.isPending ? "Advancing…" : "Advance to Paid"}
+            </Button>
           )}
         </div>
       )
