@@ -41,3 +41,4 @@ CLAUDE.md
 .commandcode/
 /lib/generated/prisma
 keys.txt
+/generated/prisma
