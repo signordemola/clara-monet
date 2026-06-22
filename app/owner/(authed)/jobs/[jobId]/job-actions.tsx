@@ -1,6 +1,6 @@
 "use client"
 
-import { getStageDescription, getOwnerNextAction } from "@/lib/stages"
+import { getOwnerStageDescription, getOwnerNextAction } from "@/lib/stages"
 import { StageBadge } from "@/components/owner/stage-badge"
 import { GalleryDeliveryForm } from "@/components/owner/gallery-delivery-form"
 import { OwnerNotes } from "@/components/owner/owner-notes"
@@ -147,7 +147,7 @@ export const JobActions = ({
           <StageBadge stage={job.stage} />
         </div>
         <p className="text-sm text-muted-foreground">
-          {getStageDescription(job.stage)}
+          {getOwnerStageDescription(job.stage)}
         </p>
         <StageAction job={job} />
       </section>

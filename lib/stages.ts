@@ -46,6 +46,18 @@ const STAGE_DESCRIPTION: Record<JobStage, string> = {
   COMPLETE: "This session is complete. We'd love to see you again.",
 }
 
+const OWNER_STAGE_DESCRIPTION: Record<JobStage, string> = {
+  BOOKED: "Booking fee captured. Contract signed. Questionnaire prompt queued.",
+  QUESTIONNAIRE_SENT:
+    "Pre-session questionnaire sent — waiting for client to complete.",
+  QUESTIONNAIRE_DONE: "Questionnaire returned. Ready to shoot.",
+  SESSION_COMPLETE:
+    "Session marked complete. Editing underway — deliver gallery when ready.",
+  GALLERY_SENT: "Gallery delivered. Balance invoice sent alongside it.",
+  PAID: "Balance paid. Ready to close out.",
+  COMPLETE: "Job complete. Review request sent.",
+}
+
 const STAGE_OWNER_ACTION: Record<JobStage, string> = {
   BOOKED: "Wait for the questionnaire prompt to be sent.",
   QUESTIONNAIRE_SENT: "Wait for the client to complete the questionnaire.",
@@ -66,6 +78,10 @@ export function getClientStageLabel(stage: JobStage): string {
 
 export function getStageDescription(stage: JobStage): string {
   return STAGE_DESCRIPTION[stage]
+}
+
+export function getOwnerStageDescription(stage: JobStage): string {
+  return OWNER_STAGE_DESCRIPTION[stage]
 }
 
 export function getOwnerNextAction(stage: JobStage): string {

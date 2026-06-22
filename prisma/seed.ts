@@ -199,7 +199,7 @@ async function main() {
         message:
           "I'm relaunching my coaching practice in July and need a proper library — website hero, LinkedIn banner, press kit thumbnail, and about 20 lifestyle shots. I've got a moodboard on Pinterest I'd love to share.",
         status: "NEW",
-        createdAt: ago(0, 9),
+        createdAt: ago(0, 4),
       },
       {
         name: "Daniel Park",
