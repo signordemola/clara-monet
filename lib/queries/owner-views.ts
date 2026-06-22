@@ -1,16 +1,48 @@
 import { prisma } from "@/lib/db"
 
+export type WeekSession = {
+  id: string
+  clientName: string
+  sessionTypeName: string
+  sessionDate: Date
+  sessionLocation: string | null
+  stage: string
+}
+
+export type PipelineCounts = {
+  BOOKED: number
+  QUESTIONNAIRE_SENT: number
+  QUESTIONNAIRE_DONE: number
+  SESSION_COMPLETE: number
+  GALLERY_SENT: number
+  PAID: number
+  COMPLETE: number
+}
+
+export type ActionItem = {
+  id: string
+  label: string
+  urgency: "high" | "medium" | "low"
+  link: string
+}
+
 export type DashboardStats = {
   newInquiries: number
   awaitingContracts: number
   awaitingInvoices: number
   thisWeekSessions: number
   totalClients: number
+  revenueEarned: number // pence — PAID + COMPLETE
+  revenueOutstanding: number // pence — GALLERY_SENT pending balance
+  weekSchedule: WeekSession[]
+  pipeline: PipelineCounts
+  actionItems: ActionItem[]
   recentActivity: Array<{
     id: string
     type: "inquiry" | "job"
     title: string
     at: Date
+    link: string
   }>
 }
 
@@ -63,6 +95,7 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
   const weekStart = startOfWeek()
   const weekEnd = new Date(weekStart)
   weekEnd.setUTCDate(weekStart.getUTCDate() + 7)
+  const now = new Date()
 
   const [
     newInquiries,
@@ -72,6 +105,8 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
     thisWeekSessions,
     recentInquiries,
     recentJobs,
+    weekJobs,
+    allJobs,
   ] = await Promise.all([
     prisma.inquiry.count({ where: { status: "NEW" } }),
     prisma.job.count({ where: { stage: "BOOKED" } }),
@@ -94,23 +129,159 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
       select: {
         id: true,
         client: { select: { name: true } },
+        stage: true,
         updatedAt: true,
+      },
+    }),
+    // This week's full schedule
+    prisma.job.findMany({
+      where: {
+        sessionDate: { gte: weekStart, lt: weekEnd },
+        stage: { not: "COMPLETE" },
+      },
+      orderBy: { sessionDate: "asc" },
+      select: {
+        id: true,
+        sessionDate: true,
+        sessionLocation: true,
+        stage: true,
+        client: { select: { name: true } },
+        sessionType: { select: { name: true } },
+      },
+    }),
+    // All active jobs for pipeline + revenue + action items
+    prisma.job.findMany({
+      select: {
+        id: true,
+        stage: true,
+        totalPrice: true,
+        balanceAmount: true,
+        balanceStatus: true,
+        sessionDate: true,
+        sessionLocation: true,
+        questionnaireSentAt: true,
+        balanceDueAt: true,
+        client: { select: { name: true } },
+        sessionType: { select: { name: true } },
+        questionnaire: { select: { id: true } },
       },
     }),
   ])
 
+  // ── Revenue ──
+  const earnedStages = ["PAID", "COMPLETE"]
+  const revenueEarned = allJobs
+    .filter((j) => earnedStages.includes(j.stage))
+    .reduce((sum, j) => sum + j.totalPrice, 0)
+  const revenueOutstanding = allJobs
+    .filter((j) => j.stage === "GALLERY_SENT" && j.balanceStatus === "PENDING")
+    .reduce((sum, j) => sum + j.balanceAmount, 0)
+
+  // ── Week schedule ──
+  const weekSchedule: WeekSession[] = weekJobs
+    .filter((j) => j.sessionDate !== null)
+    .map((j) => ({
+      id: j.id,
+      clientName: j.client.name,
+      sessionTypeName: j.sessionType.name,
+      sessionDate: j.sessionDate!,
+      sessionLocation: j.sessionLocation,
+      stage: j.stage,
+    }))
+
+  // ── Pipeline ──
+  const pipeline: PipelineCounts = {
+    BOOKED: 0,
+    QUESTIONNAIRE_SENT: 0,
+    QUESTIONNAIRE_DONE: 0,
+    SESSION_COMPLETE: 0,
+    GALLERY_SENT: 0,
+    PAID: 0,
+    COMPLETE: 0,
+  }
+  for (const j of allJobs) {
+    if (j.stage in pipeline) {
+      pipeline[j.stage as keyof PipelineCounts]++
+    }
+  }
+
+  // ── Action items ──
+  const actionItems: ActionItem[] = []
+
+  for (const j of allJobs) {
+    // Questionnaire sent but not returned, session within 3 days
+    if (
+      j.stage === "QUESTIONNAIRE_SENT" &&
+      !j.questionnaire &&
+      j.sessionDate &&
+      j.sessionDate.getTime() - now.getTime() < 3 * 86400000
+    ) {
+      const daysUntil = Math.max(
+        0,
+        Math.round((j.sessionDate.getTime() - now.getTime()) / 86400000)
+      )
+      actionItems.push({
+        id: j.id,
+        label: `${j.client.name}'s questionnaire not returned — session in ${daysUntil}d`,
+        urgency: daysUntil <= 1 ? "high" : "medium",
+        link: `/owner/jobs/${j.id}`,
+      })
+    }
+
+    // Balance overdue
+    if (
+      j.stage === "GALLERY_SENT" &&
+      j.balanceStatus === "PENDING" &&
+      j.balanceDueAt &&
+      j.balanceDueAt.getTime() < now.getTime()
+    ) {
+      const daysOverdue = Math.round(
+        (now.getTime() - j.balanceDueAt.getTime()) / 86400000
+      )
+      actionItems.push({
+        id: `bal-${j.id}`,
+        label: `${j.client.name}'s balance overdue by ${daysOverdue}d`,
+        urgency: daysOverdue > 7 ? "high" : "medium",
+        link: `/owner/jobs/${j.id}`,
+      })
+    }
+
+    // Session tomorrow or today, not yet SESSION_COMPLETE
+    if (
+      j.sessionDate &&
+      ["BOOKED", "QUESTIONNAIRE_SENT", "QUESTIONNAIRE_DONE"].includes(
+        j.stage
+      ) &&
+      j.sessionDate.getTime() - now.getTime() < 2 * 86400000 &&
+      j.sessionDate.getTime() > now.getTime()
+    ) {
+      const isToday =
+        j.sessionDate.toISOString().slice(0, 10) ===
+        now.toISOString().slice(0, 10)
+      actionItems.push({
+        id: `sess-${j.id}`,
+        label: `${j.client.name} — ${j.sessionType.name} ${isToday ? "today" : "tomorrow"}`,
+        urgency: isToday ? "high" : "low",
+        link: `/owner/jobs/${j.id}`,
+      })
+    }
+  }
+
+  // ── Recent activity (with links) ──
   const recentActivity: DashboardStats["recentActivity"] = [
     ...recentInquiries.map((i) => ({
       id: i.id,
       type: "inquiry" as const,
       title: `New inquiry from ${i.name}`,
       at: i.createdAt,
+      link: `/owner/inquiries/${i.id}`,
     })),
     ...recentJobs.map((j) => ({
       id: j.id,
       type: "job" as const,
       title: `Job updated for ${j.client.name}`,
       at: j.updatedAt,
+      link: `/owner/jobs/${j.id}`,
     })),
   ]
     .sort((a, b) => b.at.getTime() - a.at.getTime())
@@ -122,6 +293,11 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
     awaitingInvoices,
     thisWeekSessions,
     totalClients,
+    revenueEarned,
+    revenueOutstanding,
+    weekSchedule,
+    pipeline,
+    actionItems,
     recentActivity,
   }
 }

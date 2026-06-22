@@ -2,6 +2,10 @@ import Link from "next/link"
 import type { Metadata } from "next"
 import { getDashboardStats } from "@/lib/queries/owner-views"
 import { StatCard } from "@/components/owner/stat-card"
+import { WeekSchedule } from "@/components/owner/week-schedule"
+import { PipelineBar } from "@/components/owner/pipeline-bar"
+import { ActionItems } from "@/components/owner/action-items"
+import { formatCurrency } from "@/lib/utils"
 
 export const metadata: Metadata = {
   title: "Dashboard · Clara Monét",
@@ -11,7 +15,8 @@ export const metadata: Metadata = {
 const formatRelative = (date: Date) => {
   const diffMs = Date.now() - date.getTime()
   const minutes = Math.round(diffMs / 60000)
-  if (minutes < 60) return `${Math.max(1, minutes)} min ago`
+  if (minutes < 1) return "just now"
+  if (minutes < 60) return `${minutes} min ago`
   const hours = Math.round(minutes / 60)
   if (hours < 24) return `${hours}h ago`
   const days = Math.round(hours / 24)
@@ -22,7 +27,8 @@ export default async function DashboardPage() {
   const stats = await getDashboardStats()
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-8">
+      {/* Header */}
       <header className="flex flex-col gap-2">
         <p className="text-[10px] font-medium tracking-[0.24em] text-clay uppercase">
           Studio overview
@@ -35,6 +41,7 @@ export default async function DashboardPage() {
         </p>
       </header>
 
+      {/* KPI Cards */}
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="New inquiries"
@@ -55,13 +62,27 @@ export default async function DashboardPage() {
           tone="sage"
         />
         <StatCard
-          label="This week"
-          value={stats.thisWeekSessions}
-          hint="Upcoming sessions"
+          label="Revenue"
+          value={formatCurrency(stats.revenueEarned)}
+          hint="Earned to date"
           tone="paper"
         />
       </section>
 
+      {/* This Week + Revenue */}
+      <WeekSchedule
+        sessions={stats.weekSchedule}
+        revenueEarned={stats.revenueEarned}
+        revenueOutstanding={stats.revenueOutstanding}
+      />
+
+      {/* Pipeline + Actions row */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <PipelineBar pipeline={stats.pipeline} />
+        <ActionItems items={stats.actionItems} />
+      </div>
+
+      {/* Recent Activity */}
       <section className="border border-hairline bg-card p-5 md:p-6">
         <div className="mb-4 flex items-baseline justify-between">
           <h3 className="font-display text-lg font-light tracking-tight">
@@ -81,14 +102,18 @@ export default async function DashboardPage() {
         ) : (
           <ul className="divide-y divide-hairline">
             {stats.recentActivity.map((item) => (
-              <li
-                key={`${item.type}-${item.id}`}
-                className="flex items-baseline justify-between gap-3 py-3"
-              >
-                <span className="text-sm">{item.title}</span>
-                <span className="text-xs text-muted-foreground">
-                  {formatRelative(item.at)}
-                </span>
+              <li key={`${item.type}-${item.id}`}>
+                <Link
+                  href={item.link}
+                  className="group flex items-baseline justify-between gap-3 py-3 transition hover:bg-paper-warm/50"
+                >
+                  <span className="text-sm group-hover:text-clay">
+                    {item.title}
+                  </span>
+                  <span className="shrink-0 text-xs text-muted-foreground">
+                    {formatRelative(item.at)}
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>
