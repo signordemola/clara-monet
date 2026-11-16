@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "type": "module",
   "private": true,
+  "license": "MIT",
+  "packageManager": "pnpm@12.9.1",
   "scripts": {
     "predev": "pnpm typecheck",
     "dev": "next dev",

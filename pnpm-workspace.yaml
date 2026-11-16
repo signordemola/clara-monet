@@ -1,7 +1,7 @@
 packages:
   - '.'
 
-trustPolicy: none
+trustPolicy: off
 
 allowBuilds:
   sharp: true
