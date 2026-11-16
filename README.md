@@ -2,8 +2,7 @@
 
 A studio management system for a portrait photographer. It covers the client journey from first inquiry to gallery delivery and final payment.
 
-<!-- Screenshot: add an image of the owner dashboard here -->
-<!-- ![Clara Monét Photography](docs/screenshot.png) -->
+![Clara Monét Photography home page](docs/screenshot.png)
 
 **Live site:** https://clara-monet.vercel.app
 
